@@ -1,0 +1,6 @@
+<h1>localidade</h1>
+
+<app-localidade [ufSelecionada]="'MG'" [municipioSelecionado]="'Uberlândia'"  (devolveUF)="recebeUF($event)" (devolveMunicipio)="recebeMunicipio($event)"></app-localidade>
+
+<p>Estado: {{ uf }}</p>
+<p>Município: {{ municipio}}</p>
