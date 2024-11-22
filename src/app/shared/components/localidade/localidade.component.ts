@@ -31,6 +31,7 @@ export class LocalidadeComponent implements OnInit, OnChanges {
     this.carregaMunicipios();
     this.emitUF();
     this.emitMunicipio();
+
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -49,12 +50,23 @@ export class LocalidadeComponent implements OnInit, OnChanges {
       )
   }
 
+  contMudancaUF: number = 0;
+
   emitUF(): void {
+    this.contMudancaUF++;
+
     this.devolveUF.emit(this.ufSelecionada);
+
+    if (this.contMudancaUF > 1) {
+      this.limpaMunicipioSelecionado();
+    }
   }
 
   emitMunicipio(): void {
     this.devolveMunicipio.emit(this.municipioSelecionado);
   }
 
+  limpaMunicipioSelecionado(): void {
+    this.municipioSelecionado = '';
+  }
 }
