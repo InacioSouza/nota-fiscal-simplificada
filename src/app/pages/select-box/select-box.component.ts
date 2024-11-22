@@ -7,8 +7,8 @@ import { Component } from '@angular/core';
 })
 export class SelectBoxComponent {
 
-  uf!: string;
-  municipio!: string;
+  uf: string = "MG";
+  municipio: string = "Araguari";
 
   recebeUF(uf: string){
     this.uf = uf;

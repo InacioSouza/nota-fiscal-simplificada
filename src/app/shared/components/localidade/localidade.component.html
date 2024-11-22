@@ -1,10 +1,21 @@
 <div class="localidade">
 
-    <dx-select-box [items]="ufs" [(value)]="ufSelecionada" placeholder="Selecione uma UF" [searchEnabled]="true"
-        (onValueChanged)="carregaMunicipios()" (onValueChanged)="emitUF()"></dx-select-box>
+    <dx-select-box
+      [items]="ufs"
+      [value]="ufSelecionada"
+      (valueChange)="ufSelecionadaChange.emit($event)"
+      placeholder="Selecione uma UF"
+      [searchEnabled]="true"
+      (onValueChanged)="carregaMunicipios()">
+    </dx-select-box>
 
 
-    <dx-select-box [items]="municipios" [(value)]="municipioSelecionado" placeholder="Selecione um município"
-        [searchEnabled]="true" (onValueChanged)="emitMunicipio()"></dx-select-box>
+    <dx-select-box
+      [items]="municipios"
+      [value]="municipioSelecionado"
+      (valueChange)="municipioSelecionadoChange.emit($event)"
+      placeholder="Selecione um município"
+      [searchEnabled]="true">
+    </dx-select-box>
 
 </div>
