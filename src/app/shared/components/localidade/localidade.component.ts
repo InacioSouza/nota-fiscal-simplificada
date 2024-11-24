@@ -1,6 +1,7 @@
-import {Component, EventEmitter, Input, OnInit, Output, OnChanges, SimpleChange, SimpleChanges} from '@angular/core';
-import {EstadoService} from './services/estado-service.service';
-import {MunicipioService} from './services/municipio.service';
+import { Component, EventEmitter, Input, OnInit, Output, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
+import { EstadoService } from './services/estado-service.service';
+import { MunicipioService } from './services/municipio.service';
+import { UF } from './interfaces/UF';
 
 @Component({
   selector: 'app-localidade',
@@ -26,8 +27,8 @@ export class LocalidadeComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.estadoService.listaUF().subscribe((ufs: string[]) => {
-      this.ufs = ufs;
+    this.estadoService.listaUF().subscribe((ufs: UF[]) => {
+      this.ufs = ufs.map(uf => uf.sigla + ' - ' + uf.nome);
     });
 
     this.carregaMunicipios();
@@ -41,13 +42,13 @@ export class LocalidadeComponent implements OnInit {
   // }
 
   carregaMunicipios(): void {
-    this.municipioService.carregaMunicipios(this.ufSelecionada).subscribe(municipios => {
-        this.municipios = municipios.map(municipio => municipio.nome);
-        this.contMudancaUF++;
-        if (this.contMudancaUF > 1) {
-          this.municipioSelecionado = "";
-        }
+    this.municipioService.carregaMunicipios(this.ufSelecionada.substring(0, 3)).subscribe(municipios => {
+      this.municipios = municipios.map(municipio => municipio.nome);
+      this.contMudancaUF++;
+      if (this.contMudancaUF > 1) {
+        this.municipioSelecionado = "";
       }
+    }
     )
   }
 

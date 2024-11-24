@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
 })
 export class SelectBoxComponent {
 
-  uf: string = "MG";
+  uf: string = "MG - Minas Gerais";
   municipio: string = "Araguari";
 
   recebeUF(uf: string){
