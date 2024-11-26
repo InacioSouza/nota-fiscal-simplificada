@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +23,8 @@ import com.nota.sistemanf.services.StatusRegistro;
 import com.nota.sistemanf.services.Valida;
 
 @RestController
-@RequestMapping("/snf/clientes")
+@RequestMapping("/snf/cliente")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ClienteController {
 
 	Valida valida;
@@ -34,6 +36,11 @@ public class ClienteController {
 	}
 
 	@PostMapping
+	public Cliente cadastraCliente(@RequestBody Cliente cliente){
+		return clienteRepo.save(cliente);
+	}
+
+	@PostMapping("/list")
 	public List<String> cadastraCliente(@RequestBody List<Cliente> clientes) {
 
 		List<String> statusCadastro = new ArrayList<String>();

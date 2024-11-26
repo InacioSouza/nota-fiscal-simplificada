@@ -12,12 +12,16 @@ import { UnauthenticatedContentModule } from './unauthenticated-content';
 import { AppRoutingModule } from './app-routing.module';
 import { LocalidadeComponent } from './shared/components/localidade/localidade.component';
 import { SelectBoxComponent } from './pages/select-box/select-box.component';
+import { ClienteComponent } from './pages/cliente/cliente.component';
+import { CrudClienteModule } from './layouts/crud-cliente/crud-cliente.module';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     LocalidadeComponent,
-    SelectBoxComponent
+    SelectBoxComponent,
+    ClienteComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +36,8 @@ import { SelectBoxComponent } from './pages/select-box/select-box.component';
     ChangePasswordFormModule,
     LoginFormModule,
     UnauthenticatedContentModule,
-    AppRoutingModule
+    AppRoutingModule,
+    CrudClienteModule
   ],
   providers: [
     AuthService,

@@ -5,7 +5,7 @@ export class AppInfoService {
   constructor() {}
 
   public get title() {
-    return 'Select Com Template';
+    return 'Nota Fiscal';
   }
 
   public get currentYear() {

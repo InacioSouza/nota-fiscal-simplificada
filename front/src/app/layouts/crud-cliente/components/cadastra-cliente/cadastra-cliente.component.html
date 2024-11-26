@@ -1,0 +1,26 @@
+<div class="cadastra-cliente">
+    <h1>Cadastro de Cliente</h1>
+
+    <dx-form [(formData)]="cliente">
+
+        <dxi-item dataField="nome">
+
+            <dxi-validation-rule type="pattern" pattern="^[a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇÑ ]+$" message="Números e acentos/caracteres especiais não são permitidos"></dxi-validation-rule>
+
+            <dxi-validation-rule type="required" message="O nome não pode ser vazio"></dxi-validation-rule>
+        </dxi-item>
+
+        <dxi-item itemType="button" [buttonOptions]="buttonOptions"></dxi-item>
+    </dx-form>
+
+    <dx-popup [(visible)]="verPopupOK" [title]="'Status'" [width]="350" [height]="200" [dragEnabled]="false"
+        [closeOnOutsideClick]="true" [showCloseButton]="true">
+        <p class="text__popup">Cliente cadastrado com sucesso!</p>
+    </dx-popup>
+
+    <dx-popup [(visible)]="verPopupFalha" [title]="'Status'" [width]="350" [height]="200" [dragEnabled]="false"
+        [closeOnOutsideClick]="true" [showCloseButton]="true">
+        <p class="text__popup falha">Falha ao cadastrar cliente!</p>
+    </dx-popup>
+
+</div>

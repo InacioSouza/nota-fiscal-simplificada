@@ -1,0 +1,25 @@
+.cadastra-cliente{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;align-items: center;
+}
+
+h1{
+    font-size: 2.5rem;
+    font-weight: 350;
+}
+
+dx-form {
+    width: 40%;
+    min-width: 350px;
+}
+
+.text__popup{
+    font-size: 1.2rem;
+    font-weight: normal;
+    overflow: hidden;
+}
+
+.falha{
+    color: red;
+}

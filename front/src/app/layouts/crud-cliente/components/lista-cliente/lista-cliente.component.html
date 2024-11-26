@@ -1,0 +1,25 @@
+<div class="lista-cliente">
+    <dx-data-grid class="dx-card wide-card"
+    [dataSource]="clientes" 
+    keyExpr="id"
+    [showBorders]="true"
+    [columnAutoWidth]="true"
+    [focusedRowEnabled]="true" 
+    [focusedRowIndex]="rowFoco" 
+    (onRowUpdating)="editaCliente($event)"
+    (onRowRemoving)="deletaCliente($event)"
+    (onInitNewRow)="cadastraCliente($event)"
+    [paging]="{pageSize: 10}"
+    [pager]="{ showPageSizeSelector: true, allowedPageSizes: [5, 10, 20] }">
+
+        <dxo-filter-row [visible]="true" ></dxo-filter-row>
+
+        <dxo-editing [texts]="textosAcoes"  mode="row" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true">
+        </dxo-editing>
+
+        <dxi-column [width]="150" alignment="left" caption="Id" dataField="id" [allowEditing]="false"></dxi-column>
+
+        <dxi-column [width]="150" caption="Nome" dataField="nome"></dxi-column>
+
+    </dx-data-grid>
+</div>

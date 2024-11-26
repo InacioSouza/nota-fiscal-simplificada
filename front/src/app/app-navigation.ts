@@ -19,6 +19,10 @@ export const navigation = [
       {
         text: 'select-box',
         path: '/select-box'
+      },
+      {
+        text: 'Clientes',
+        path: 'cliente/lista-cliente'
       }
     ]
   }
