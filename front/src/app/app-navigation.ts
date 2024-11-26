@@ -14,7 +14,17 @@ export const navigation = [
       },
       {
         text: 'Clientes',
-        path: 'cliente/lista-cliente'
+        items: [
+          {
+            text: 'listar',
+            path: '/cliente/lista-cliente'
+          },
+
+          {
+            text: 'Cadastrar',
+            path: '/cliente/cadastra-cliente'
+          }
+        ]
       }
     ]
   }

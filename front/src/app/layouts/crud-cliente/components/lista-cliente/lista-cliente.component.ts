@@ -20,6 +20,10 @@ export class ListaClienteComponent implements OnInit {
     confirmDeleteMessage: 'Deseja excluir permanentemente este cliente?',
   }
 
+  get existemDados(): boolean {
+    return this.clientes && this.clientes.length > 0;
+  }
+
   constructor(private clienteService: ClienteService, private router: Router) {
 
   }
