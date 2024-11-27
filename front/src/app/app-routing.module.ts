@@ -10,6 +10,8 @@ import { ClienteComponent } from './pages/cliente/cliente.component';
 import { CrudClienteModule } from './layouts/crud-cliente/crud-cliente.module';
 import { CadastraClienteComponent } from './layouts/crud-cliente/components/cadastra-cliente/cadastra-cliente.component';
 import { ListaClienteComponent } from './layouts/crud-cliente/components/lista-cliente/lista-cliente.component';
+import { ProdutoComponent } from './pages/produto/produto.component';
+import { CadastraProdutoComponent } from './layouts/crud-produto/components/cadastra-produto/cadastra-produto.component';
 
 const routes: Routes = [
   {
@@ -36,6 +38,18 @@ const routes: Routes = [
     canActivate: [AuthGuardService]
   },
   {
+    path: 'produto',
+    component: ProdutoComponent,
+    children: [
+      {
+        path: 'cadastra-produto',
+        component: CadastraProdutoComponent,
+        canActivate: [AuthGuardService]
+      }
+    ],
+    canActivate: [AuthGuardService]
+  }
+  , {
     path: 'home',
     component: HomeComponent,
     canActivate: [AuthGuardService]

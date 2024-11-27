@@ -1,0 +1,41 @@
+<div class="cadastra-produto">
+
+    <h1>Cadastro de Produto</h1>
+
+    <div class="inputs">
+
+        <dx-form [(formData)]="produto">
+
+            <dxi-item dataField="nome" [label]="{ text: 'Nome' }"
+                [editorOptions]="{placeholder: 'Digite o nome do produto' }">
+
+                <dxi-validation-rule type="required" message="digite um nome para o produto"></dxi-validation-rule>
+
+                <dxi-validation-rule type="pattern" pattern="^[a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇÑ ]+$"
+                    message="Números e acentos/caracteres especiais não são permitidos"></dxi-validation-rule>
+
+            </dxi-item>
+
+            <dxi-item [label]="{text: 'Preço'}" [editorType]="'dxNumberBox'"
+                [editorOptions]="{format: 'R$ #,##0.##', inputAttr: { 'aria-label': 'Currency Format' }, placeholder: '0.00'}">
+
+                <dxi-validation-rule type="required" message="digite um preço para o produto"></dxi-validation-rule>
+
+            </dxi-item>
+
+            <dxi-item itemType="button" [buttonOptions]="buttonOptions"></dxi-item>
+
+        </dx-form>
+    </div>
+
+    <dx-popup [(visible)]="verPopupOK" [title]="'Status'" [width]="350" [height]="200" [dragEnabled]="false"
+        [closeOnOutsideClick]="true" [showCloseButton]="true">
+        <p class="text__popup">Produto cadastrado com sucesso!</p>
+    </dx-popup>
+
+    <dx-popup [(visible)]="verPopupFalha" [title]="'Status'" [width]="350" [height]="200" [dragEnabled]="false"
+        [closeOnOutsideClick]="true" [showCloseButton]="true">
+        <p class="text__popup falha">Falha ao cadastrar produto!</p>
+    </dx-popup>
+
+</div>

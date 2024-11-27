@@ -25,6 +25,15 @@ export const navigation = [
             path: '/cliente/cadastra-cliente'
           }
         ]
+      },
+      {
+        text: 'Produto',
+        items: [
+          {
+            text: 'Cadastra',
+            path: 'produto/cadastra-produto'
+          }
+        ]
       }
     ]
   }

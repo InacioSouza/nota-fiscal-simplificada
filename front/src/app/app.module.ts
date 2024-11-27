@@ -14,6 +14,8 @@ import { LocalidadeComponent } from './shared/components/localidade/localidade.c
 import { SelectBoxComponent } from './pages/select-box/select-box.component';
 import { ClienteComponent } from './pages/cliente/cliente.component';
 import { CrudClienteModule } from './layouts/crud-cliente/crud-cliente.module';
+import { ProdutoComponent } from './pages/produto/produto.component';
+import { CrudProdutoModule } from './layouts/crud-produto/crud-produto.module';
 
 
 @NgModule({
@@ -21,7 +23,8 @@ import { CrudClienteModule } from './layouts/crud-cliente/crud-cliente.module';
     AppComponent,
     LocalidadeComponent,
     SelectBoxComponent,
-    ClienteComponent
+    ClienteComponent,
+    ProdutoComponent
   ],
   imports: [
     BrowserModule,
@@ -37,7 +40,8 @@ import { CrudClienteModule } from './layouts/crud-cliente/crud-cliente.module';
     LoginFormModule,
     UnauthenticatedContentModule,
     AppRoutingModule,
-    CrudClienteModule
+    CrudClienteModule,
+    CrudProdutoModule
   ],
   providers: [
     AuthService,
