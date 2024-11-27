@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ProdutoService } from '../../services/produto.service';
 import { Produto } from '../../interfaces/Produto';
 import { DxFormComponent } from 'devextreme-angular';
@@ -13,14 +13,24 @@ export class CadastraProdutoComponent {
   verPopupOK: boolean = false;
   verPopupFalha: boolean = false;
 
-  produto!: Produto;
+  produtoForm = {
+    nome: '',
+    preco: ''
+  }
+
+  produto: Produto = {
+    id: 0,
+    nome: '',
+    preco: 0
+  }
+
 
   @ViewChild(DxFormComponent, { static: false }) form!: DxFormComponent;
 
   buttonOptions = {
     text: "Cadastrar",
     type: "success",
-    onclick: () => this.cadastraProduto()
+    onClick: () => this.cadastraProduto()
   }
 
   constructor(private produtoService: ProdutoService) {
@@ -29,43 +39,25 @@ export class CadastraProdutoComponent {
 
   cadastraProduto(): void {
 
+    this.produto.preco = parseFloat(this.produtoForm.preco);
+    this.produto.nome = this.produtoForm.nome;
+
+    
     const resultadoValidacao = this.form.instance.validate();
 
     if (resultadoValidacao.isValid) {
       this.produtoService.cadastra(this.produto).subscribe({
         next: () => {
           this.verPopupOK = true;
-          this.form.instance.updateData('nome', '');
           this.form.instance.getEditor('nome')?.reset();
+          this.form.instance.getEditor('preco')?.reset();
         },
         error: (err) => {
           this.verPopupFalha = true;
         }
       });
-    }
-  }
+    } 
 
-
-  customFormat = {
-    type: 'custom',
-    formatter: (value: number | null) => {
-      return value != null
-        ? value.toLocaleString('pt-BR', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2
-        })
-        : '';
-    },
-    parser: (text: string) => {
-      return text
-        ? parseFloat(text.replace(/\./g, '').replace(',', '.'))
-        : null;
-    }
-  };
-
-  handleInput(e: any): void {
-    const inputValue = e.event.target.value.replace(/\D/g, ''); // Remove não numéricos
-    const numericValue = parseFloat(inputValue) / 100; // Divide por 100 para ajustar casas decimais
-    e.component.option('value', numericValue); // Atualiza o valor formatado
+    
   }
 }

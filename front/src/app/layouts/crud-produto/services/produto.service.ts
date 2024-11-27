@@ -8,11 +8,11 @@ import { Observable } from 'rxjs';
 })
 export class ProdutoService {
 
-  url: string = 'http://8080/snf/produto'
+  url: string = 'http://localhost:8080/snf/produto'
 
   constructor(private http: HttpClient) { }
 
   cadastra( produto: Produto ): Observable<any>{
-    return this.http.post<any>(`${this.url}` ,produto);
+    return this.http.post<Produto>(`${this.url}` ,produto);
   }
 }

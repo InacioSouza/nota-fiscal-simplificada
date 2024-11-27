@@ -34,7 +34,7 @@ public class ProdutoController {
 		this.valida = valida;
 	}
 
-	@PostMapping
+	@PostMapping("/list")
 	public List<String> criaProduto(@RequestBody List<Produto> produtos) {
 
 		List<String> statusCadastro = new ArrayList<String>();
@@ -67,6 +67,11 @@ public class ProdutoController {
 		});
 
 		return statusCadastro;
+	}
+
+	@PostMapping
+	public Produto cadastra(@RequestBody Produto produto){
+		return produtoRepo.save(produto);
 	}
 
 	@GetMapping
