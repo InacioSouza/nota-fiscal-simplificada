@@ -1,0 +1,23 @@
+<div class="lista-produto">
+    <dx-data-grid class="dx-card wide-card" [dataSource]="produtos" keyExpr="id" [showBorders]="true" [columnAutoWidth]="true"
+        [focusedRowEnabled]="true" [focusedRowIndex]="rowFoco" (onRowUpdating)="editaProduto($event)"
+        (onRowRemoving)="deletaProduto($event)" (onInitNewRow)="cadastraProduto($event)"
+        >
+
+        <dxo-filter-row [visible]="true"></dxo-filter-row>
+
+        <dxo-paging [pageSize]="10"></dxo-paging>
+        <dxo-pager [visible]="true" [showPageSizeSelector]="true" [allowedPageSizes]="[10, 20, 30]"></dxo-pager>
+
+        <dxo-editing [texts]="textoAcoes" width="200" mode="row" [allowUpdating]="true" [allowDeleting]="true"
+            [allowAdding]="existemDados"></dxo-editing>
+
+        <dxi-column caption="Id" width="225" dataField="id" alignment="left" [allowEditing]="false"></dxi-column>
+
+        <dxi-column caption="Nome" width="225" dataField="nome"></dxi-column>
+
+        <dxi-column caption="Preço" width="225" [format]=" {type: 'currency', currency: 'BRL' }" dataField="preco"
+            alignment="left"></dxi-column>
+
+    </dx-data-grid>
+</div>
