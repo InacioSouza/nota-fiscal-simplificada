@@ -1,22 +1,15 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { CadastraProdutoComponent } from './components/cadastra-produto/cadastra-produto.component';
-import { DxButtonModule, DxFormModule, DxNumberBoxModule, DxPopupModule, DxTextBoxModule, DxValidatorModule } from 'devextreme-angular';
-
-
+import { ListaProdutoComponent } from './components/lista-produto/lista-produto.component';
+import { DependenciasModule } from '../dependencias/dependencias.module';
 
 @NgModule({
   declarations: [
-    CadastraProdutoComponent
+    CadastraProdutoComponent,
+    ListaProdutoComponent
   ],
   imports: [
-    CommonModule,
-    DxFormModule,
-    DxButtonModule,
-    DxValidatorModule,
-    DxTextBoxModule,
-    DxPopupModule,
-    DxNumberBoxModule
+    DependenciasModule
   ],
   exports:[
     CadastraProdutoComponent

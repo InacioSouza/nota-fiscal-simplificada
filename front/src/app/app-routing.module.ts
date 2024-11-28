@@ -12,6 +12,7 @@ import { CadastraClienteComponent } from './layouts/crud-cliente/components/cada
 import { ListaClienteComponent } from './layouts/crud-cliente/components/lista-cliente/lista-cliente.component';
 import { ProdutoComponent } from './pages/produto/produto.component';
 import { CadastraProdutoComponent } from './layouts/crud-produto/components/cadastra-produto/cadastra-produto.component';
+import { ListaProdutoComponent } from './layouts/crud-produto/components/lista-produto/lista-produto.component';
 
 const routes: Routes = [
   {
@@ -44,6 +45,11 @@ const routes: Routes = [
       {
         path: 'cadastra-produto',
         component: CadastraProdutoComponent,
+        canActivate: [AuthGuardService]
+      },
+      {
+        path: 'lista-produto',
+        component: ListaProdutoComponent,
         canActivate: [AuthGuardService]
       }
     ],

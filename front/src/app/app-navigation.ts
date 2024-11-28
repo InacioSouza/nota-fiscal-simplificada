@@ -16,13 +16,12 @@ export const navigation = [
         text: 'Clientes',
         items: [
           {
-            text: 'listar',
-            path: '/cliente/lista-cliente'
-          },
-
-          {
             text: 'Cadastrar',
             path: '/cliente/cadastra-cliente'
+          },
+          {
+            text: 'listar',
+            path: '/cliente/lista-cliente'
           }
         ]
       },
@@ -30,8 +29,12 @@ export const navigation = [
         text: 'Produto',
         items: [
           {
-            text: 'Cadastra',
-            path: 'produto/cadastra-produto'
+            text: 'Cadastrar',
+            path: '/produto/cadastra-produto'
+          },
+          {
+            text: 'Listar',
+            path: '/produto/lista-produto'
           }
         ]
       }

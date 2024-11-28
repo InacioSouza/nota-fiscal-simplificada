@@ -19,7 +19,8 @@
             <dxi-item dataField="preco" [label]="{text: 'Preço'}" [editorType]="'dxNumberBox'" [editorOptions]="{
                     format: 'R$ #,##0.##',
                     inputAttr: { 'aria-label': 'Currency Format' },
-                    placeholder: '0.00',
+                    min: 0.1
+                    ,placeholder: '0.00',
                     }">
 
                 <dxi-validation-rule type="required" message="digite um preço para o produto"></dxi-validation-rule>
