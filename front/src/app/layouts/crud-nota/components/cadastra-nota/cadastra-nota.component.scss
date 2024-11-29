@@ -1,0 +1,69 @@
+.cadastra__nota {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+h1 {
+  font-size: 3rem;
+  font-weight: 300;
+}
+
+.form {
+  display: flex;
+  width: 350px;
+  flex-direction: column;
+  align-items: left;
+  gap: 30px;
+}
+
+.btn__add__item {
+  margin-top: 20px;
+  width: 140px;
+}
+
+.list__item {
+  background-color: rgb(231, 231, 231);
+  width: 700px;
+
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+}
+
+dx-list {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 650px;
+  height: auto;
+  gap: 25px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background-color: rgb(187, 185, 185);
+  padding: 5px;
+  margin: 6px 0;
+}
+
+.dados {
+  display: flex;
+  gap: 15px;
+}
+
+.dado__item {
+  text-align: left;
+  font-weight: 300;
+}
+
+.dado__item span {
+  font-weight: 400;
+}

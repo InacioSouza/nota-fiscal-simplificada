@@ -37,6 +37,19 @@ export const navigation = [
             path: '/produto/lista-produto'
           }
         ]
+      },
+      {
+        text: 'Nota',
+        items: [
+          {
+            text: 'Cadastrar',
+            path: '/nota/cadastra-nota'
+          },
+          {
+            text: 'Listar',
+            path: '/nota/lista-nota'
+          }
+        ]
       }
     ]
   }

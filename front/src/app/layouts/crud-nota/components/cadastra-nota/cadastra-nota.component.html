@@ -1,0 +1,58 @@
+<div class="cadastra__nota">
+    <h1>Cadastro de Nota Fiscal</h1>
+
+    <div class="form">
+
+        <h2>Itens</h2>
+
+        <dx-select-box label="Produto" labelMode="outside" [(value)]="produtoSelecionado" [items]="produtos"
+            displayExpr="nome" placeholder="Selecione um produto" [searchEnabled]="true"
+            (onValueChanged)="mostraPrecoUnit($event)">
+        </dx-select-box>
+
+        <dx-number-box label="Preço unitário" labelMode="outside" format="R$ #,##0.##" [value]="precoUnit"
+            [readOnly]="true">
+        </dx-number-box>
+
+        <dx-number-box #qtd [(value)]="qtdProduto" label="Quantidade" labelMode="outside" (onChange)="calculaValorTot()"
+            format="#" [min]="1" [inputAttr]="{ 'aria-label': 'Integer Format'}">
+        </dx-number-box>
+
+        <dx-number-box label="Valor total" labelMode="outside" format="R$ #,##0.##" [value]="valorTot"
+            [readOnly]="true"></dx-number-box>
+
+        <dx-button class="btn__add__item" text="Adicionar" (onClick)="adicionaItem()" stylingMode="outlined"
+            type="success"></dx-button>
+    </div>
+
+    <div class="list__item">
+
+        <dx-list *ngIf="itens.length > 0 " [items]="itens" selection-mode="single" [height]="400"
+            [showSelectionControls]="true" [showSelectionControls]="true" [allowItemDeleting]="true"
+            [itemDeleteMode]="'static'">
+
+            <div class="item" *dxTemplate="let item of 'item'">
+
+                <div class="dados">
+                    <div class="dado__item">
+                        <span>Produto:</span> {{item.produto.nome}}
+                    </div>
+
+                    <div class="dado__item">
+                        <span>Preço unitário: </span> {{ item.produto.preco | currency}}
+                    </div>
+
+                    <div class="dado__item">
+                        <span>Quantidade: </span> {{ item.quantidade }}
+                    </div>
+
+                    <div class="dado__item">
+                        <span>Total: </span> {{ item.valorTotal | currency}}
+                    </div>
+                </div>
+            </div>
+        </dx-list>
+
+    </div>
+
+</div>
