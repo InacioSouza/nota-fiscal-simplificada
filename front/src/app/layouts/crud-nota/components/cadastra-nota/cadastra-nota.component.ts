@@ -3,6 +3,8 @@ import { Item } from '../../interfaces/Item';
 import { NotaService } from '../../services/nota.service';
 import { Produto } from 'src/app/layouts/crud-produto/interfaces/Produto';
 import { ProdutoService } from 'src/app/layouts/crud-produto/services/produto.service';
+import { Cliente } from 'src/app/layouts/crud-cliente/interfaces/Cliente';
+import { ClienteService } from 'src/app/layouts/crud-cliente/services/cliente.service';
 
 @Component({
   selector: 'app-cadastra-nota',
@@ -11,6 +13,10 @@ import { ProdutoService } from 'src/app/layouts/crud-produto/services/produto.se
 })
 export class CadastraNotaComponent implements OnInit {
 
+  dataHoje: Date = new Date();
+
+  clientes!: Cliente[];
+
   produtos!: Produto[];
   itens: Item[] = [];
 
@@ -18,11 +24,16 @@ export class CadastraNotaComponent implements OnInit {
 
   precoUnit: number = 0;
   qtdProduto: number = 0;
-  valorTot: number = 0;
+  valorTotalItem: number = 0;
+  valorTotalNota: number = 0;
 
-  constructor(private produtoService: ProdutoService, private notaService: NotaService) { }
+  constructor(private clienteService: ClienteService, private produtoService: ProdutoService, private notaService: NotaService) { }
 
   ngOnInit(): void {
+
+    this.clienteService.lista().subscribe(
+      result => this.clientes = result
+    );
 
     this.produtoService.lista().subscribe(result => {
       this.produtos = result;
@@ -38,7 +49,7 @@ export class CadastraNotaComponent implements OnInit {
   calculaValorTot() {
 
     if (this.produtoSelecionado) {
-      this.valorTot = this.precoUnit * this.qtdProduto;
+      this.valorTotalItem = this.precoUnit * this.qtdProduto;
     }
   }
 
@@ -48,7 +59,7 @@ export class CadastraNotaComponent implements OnInit {
       id: 0,
       produto: this.produtoSelecionado,
       quantidade: this.qtdProduto,
-      valorTotal: this.valorTot
+      valorTotal: this.valorTotalItem
     }
 
     if (this.itens.find(itemArray => itemArray.produto.id === item.produto.id))
@@ -58,9 +69,16 @@ export class CadastraNotaComponent implements OnInit {
 
       this.itens.push(item);
 
-      console.log(item);
+      this.calculaValorTotNota();
     }
   }
 
+  calculaValorTotNota(): void {
+
+  }
+
+  emiteNota(): void {
+
+  }
 
 }

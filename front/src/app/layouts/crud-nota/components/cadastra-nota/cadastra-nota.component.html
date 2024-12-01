@@ -1,58 +1,83 @@
-<div class="cadastra__nota">
-    <h1>Cadastro de Nota Fiscal</h1>
+<div class="nota">
+    <div class="cadastra__nota">
+        <h1>Cadastro de Nota Fiscal</h1>
 
-    <div class="form">
+        <h2>Data de emissão</h2>
 
-        <h2>Itens</h2>
+        <div class="data__emissao">
+            <dx-date-box type="date" [value]="dataHoje" [inputAttr]="{ 'aria-label': 'Date' }"
+                [readOnly]="true"></dx-date-box>
+        </div>
 
-        <dx-select-box label="Produto" labelMode="outside" [(value)]="produtoSelecionado" [items]="produtos"
-            displayExpr="nome" placeholder="Selecione um produto" [searchEnabled]="true"
-            (onValueChanged)="mostraPrecoUnit($event)">
-        </dx-select-box>
+        <h2>Cliente</h2>
 
-        <dx-number-box label="Preço unitário" labelMode="outside" format="R$ #,##0.##" [value]="precoUnit"
-            [readOnly]="true">
-        </dx-number-box>
+        <div class="cliente">
+            <dx-select-box [(value)]="produtoSelecionado" [items]="clientes" displayExpr="nome"
+                placeholder="Selecione um Cliente" [searchEnabled]="true">
+            </dx-select-box>
+        </div>
 
-        <dx-number-box #qtd [(value)]="qtdProduto" label="Quantidade" labelMode="outside" (onChange)="calculaValorTot()"
-            format="#" [min]="1" [inputAttr]="{ 'aria-label': 'Integer Format'}">
-        </dx-number-box>
+        <div class="form">
 
-        <dx-number-box label="Valor total" labelMode="outside" format="R$ #,##0.##" [value]="valorTot"
-            [readOnly]="true"></dx-number-box>
+            <h2>Itens</h2>
 
-        <dx-button class="btn__add__item" text="Adicionar" (onClick)="adicionaItem()" stylingMode="outlined"
-            type="success"></dx-button>
-    </div>
+            <dx-select-box label="Produto" labelMode="outside" [(value)]="produtoSelecionado" [items]="produtos"
+                displayExpr="nome" placeholder="Selecione um produto" [searchEnabled]="true"
+                (onValueChanged)="mostraPrecoUnit($event)">
+            </dx-select-box>
 
-    <div class="list__item">
+            <dx-number-box label="Preço unitário" labelMode="outside" format="R$ #,##0.##" [value]="precoUnit"
+                [readOnly]="true">
+            </dx-number-box>
 
-        <dx-list *ngIf="itens.length > 0 " [items]="itens" selection-mode="single" [height]="400"
-            [showSelectionControls]="true" [showSelectionControls]="true" [allowItemDeleting]="true"
-            [itemDeleteMode]="'static'">
+            <dx-number-box #qtd [(value)]="qtdProduto" label="Quantidade" labelMode="outside"
+                (onChange)="calculaValorTot()" format="#" [min]="1" [inputAttr]="{ 'aria-label': 'Integer Format'}">
+            </dx-number-box>
 
-            <div class="item" *dxTemplate="let item of 'item'">
+            <dx-number-box label="Valor total" labelMode="outside" format="R$ #,##0.##" [value]="valorTotalItem"
+                [readOnly]="true"></dx-number-box>
 
-                <div class="dados">
-                    <div class="dado__item">
-                        <span>Produto:</span> {{item.produto.nome}}
-                    </div>
+            <dx-button class="btn__add__item" text="Adicionar" (onClick)="adicionaItem()" stylingMode="outlined"
+                type="normal"></dx-button>
+        </div>
 
-                    <div class="dado__item">
-                        <span>Preço unitário: </span> {{ item.produto.preco | currency}}
-                    </div>
+        <div class="list__item">
 
-                    <div class="dado__item">
-                        <span>Quantidade: </span> {{ item.quantidade }}
-                    </div>
+            <dx-list *ngIf="itens.length > 0 " [items]="itens" height="100%" [allowItemDeleting]="true"
+                [itemDeleteMode]="'static'">
 
-                    <div class="dado__item">
-                        <span>Total: </span> {{ item.valorTotal | currency}}
+                <div class="item" *dxTemplate="let item of 'item'">
+
+                    <div class="dados">
+                        <div class="dado__item">
+                            <span>Produto:</span> {{item.produto.nome}}
+                        </div>
+
+                        <div class="dado__item">
+                            <span>Preço unitário: </span> {{ item.produto.preco | currency}}
+                        </div>
+
+                        <div class="dado__item">
+                            <span>Quantidade: </span> {{ item.quantidade }}
+                        </div>
+
+                        <div class="dado__item">
+                            <span>Total: </span> {{ item.valorTotal | currency}}
+                        </div>
                     </div>
                 </div>
-            </div>
-        </dx-list>
+            </dx-list>
 
+        </div>
+
+        <div class="valor__nota">
+            <dx-number-box label="Valor da nota" labelMode="outside" format="R$ #,##0.##" [value]="valorTotalNota"
+                [readOnly]="true">
+            </dx-number-box>
+        </div>
+
+        <dx-button class="btn__add__item" text="Emitir nota" (onClick)="emiteNota()" stylingMode="outlined"
+            type="success"></dx-button>
     </div>
 
 </div>
