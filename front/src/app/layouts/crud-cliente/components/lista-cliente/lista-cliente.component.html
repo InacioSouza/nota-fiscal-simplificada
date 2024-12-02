@@ -1,5 +1,5 @@
 <div class="lista-cliente">
-    <dx-data-grid class="dx-card wide-card" [dataSource]="clientes" keyExpr="id" [showBorders]="true"
+    <dx-data-grid [dataSource]="clientes" keyExpr="id" [showBorders]="true"
         [columnAutoWidth]="true" [focusedRowEnabled]="true" [focusedRowIndex]="rowFoco"
         (onRowUpdating)="editaCliente($event)" (onRowRemoving)="deletaCliente($event)"
         (onInitNewRow)="cadastraCliente($event)">

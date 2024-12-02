@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Item } from '../interfaces/Item';
 import { Observable } from 'rxjs';
 import { NotaForm } from '../interfaces/NotaForm';
+import { Nota } from '../interfaces/Nota';
 
 @Injectable({
   providedIn: 'root'
@@ -19,5 +20,9 @@ export class NotaService {
 
   cadastraNota(nota: NotaForm): Observable<any> {
     return this.http.post<any>(this.urlNota, nota);
+  }
+
+  lista(): Observable<Nota[]>{
+    return this.http.get<Nota[]>(this.urlNota);
   }
 }

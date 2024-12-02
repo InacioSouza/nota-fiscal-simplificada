@@ -1,0 +1,41 @@
+<div class="lista__notas">
+    <div class="grid__notas">
+        <dx-data-grid [dataSource]="notas" keyExpr="id" [showBorders]="true" [columnAutoWidth]="true"
+            [focusedRowEnabled]="true" [focusedRowIndex]="0">
+
+            <dxo-filter-row [visible]="true"></dxo-filter-row>
+
+
+            <dxo-paging [pageSize]="10"></dxo-paging>
+            <dxo-pager [visible]="true" [showPageSizeSelector]="true" [allowedPageSizes]="[10, 20, 30]"></dxo-pager>
+
+            <dxo-editing mode="row" [allowAdding]="existemDados"></dxo-editing>
+
+            <dxo-master-detail [enabled]="true" [template]="'detail'"></dxo-master-detail>
+
+            <div *dxTemplate="let nota of 'detail'">
+                <h2>Itens</h2>
+
+                <dx-data-grid [dataSource]="nota.data.itens" [showBorders]="true" [columnAutoWidth]="true"
+                    [focusedRowEnabled]="true" [focusedRowIndex]="0">
+                    <dxi-column alignment="left" width="220" dataField="id" caption="Id"> </dxi-column>
+                    <dxi-column alignment="left" width="220" dataField="produto.nome" caption="Produto"></dxi-column>
+                    <dxi-column alignment="left" width="220" dataField="produto.preco"
+                        [format]=" {type: 'currency', currency: 'BRL' }" caption="Preço unitário"></dxi-column>
+                    <dxi-column alignment="left" width="220" dataField="quantidade" caption="Quantidade"></dxi-column>
+                </dx-data-grid>
+
+            </div>
+
+            <dxi-column alignment="left" width="220" dataField="id" caption="Id"></dxi-column>
+            <dxi-column alignment="left" width="220" dataField="numero" caption="número"></dxi-column>
+
+            <dxi-column alignment="left" width="220" dataField="data_emissao" caption="Data de Emissão" dataType="date">
+
+            </dxi-column>
+            <dxi-column alignment="left" width="220" dataField="cliente.nome" caption="Cliente"></dxi-column>
+            <dxi-column alignment="left" width="220" dataField="valorTotal" caption="Valor Total"
+                [format]=" {type: 'currency', currency: 'BRL' }"></dxi-column>
+        </dx-data-grid>
+    </div>
+</div>

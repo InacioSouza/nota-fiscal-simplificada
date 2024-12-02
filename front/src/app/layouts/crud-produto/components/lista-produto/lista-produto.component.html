@@ -1,5 +1,5 @@
 <div class="lista-produto">
-    <dx-data-grid class="dx-card wide-card" [dataSource]="produtos" keyExpr="id" [showBorders]="true" [columnAutoWidth]="true"
+    <dx-data-grid [dataSource]="produtos" keyExpr="id" [showBorders]="true" [columnAutoWidth]="true"
         [focusedRowEnabled]="true" [focusedRowIndex]="rowFoco" (onRowUpdating)="editaProduto($event)"
         (onRowRemoving)="deletaProduto($event)" (onInitNewRow)="cadastraProduto($event)"
         >

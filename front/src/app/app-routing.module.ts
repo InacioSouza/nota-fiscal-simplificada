@@ -15,6 +15,7 @@ import { CadastraProdutoComponent } from './layouts/crud-produto/components/cada
 import { ListaProdutoComponent } from './layouts/crud-produto/components/lista-produto/lista-produto.component';
 import { NotaComponent } from './pages/nota/nota.component';
 import { CadastraNotaComponent } from './layouts/crud-nota/components/cadastra-nota/cadastra-nota.component';
+import { ListaNotaComponent } from './layouts/crud-nota/components/lista-nota/lista-nota.component';
 
 const routes: Routes = [
   {
@@ -64,6 +65,11 @@ const routes: Routes = [
       {
         path: 'cadastra-nota',
         component: CadastraNotaComponent,
+        canActivate: [AuthGuardService]
+      },
+      {
+        path: 'lista-nota',
+        component: ListaNotaComponent,
         canActivate: [AuthGuardService]
       }
     ],
