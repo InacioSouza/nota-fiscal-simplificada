@@ -6,11 +6,9 @@ import javax.persistence.EntityManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.nota.sistemanf.entidades.Item;
 import com.nota.sistemanf.entidades.Nota;
-import com.nota.sistemanf.entidades.Produto;
 import com.nota.sistemanf.repository.ItemRepository;
 import com.nota.sistemanf.repository.ProdutoRepository;
 

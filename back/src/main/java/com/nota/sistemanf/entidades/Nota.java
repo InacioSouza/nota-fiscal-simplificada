@@ -20,7 +20,7 @@ public class Nota {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	private String numero;
+	private int numero;
 
 	private Date data_emissao = new Date(System.currentTimeMillis());
 
@@ -35,7 +35,7 @@ public class Nota {
 	public Nota() {
 	}
 
-	public Nota(Cliente cliente, List<Item> itens, String numero) {
+	public Nota(Cliente cliente, List<Item> itens, int numero) {
 		this.cliente = cliente;
 		this.itens = itens;
 
@@ -91,11 +91,11 @@ public class Nota {
 		return id;
 	}
 
-	public void setNumero(String numero) {
+	public void setNumero(int numero) {
 		this.numero = numero;
 	}
 
-	public String getNumero() {
+	public int getNumero() {
 		return numero;
 	}
 

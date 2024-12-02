@@ -7,6 +7,7 @@ import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,22 +23,28 @@ import com.nota.sistemanf.entidades.Cliente;
 import com.nota.sistemanf.entidades.Item;
 import com.nota.sistemanf.entidades.Nota;
 import com.nota.sistemanf.entidades.Produto;
+import com.nota.sistemanf.entidades.SequenciaNota;
 import com.nota.sistemanf.repository.ClienteRepository;
 import com.nota.sistemanf.repository.ItemRepository;
 import com.nota.sistemanf.repository.NotaRepository;
 import com.nota.sistemanf.repository.ProdutoRepository;
+import com.nota.sistemanf.repository.SequenciaNotaRepository;
+import com.nota.sistemanf.response.Response;
 import com.nota.sistemanf.services.Cadastra;
+import com.nota.sistemanf.services.GeraNumero;
 import com.nota.sistemanf.services.StatusRegistro;
 import com.nota.sistemanf.services.Valida;
 
 @RestController
-@RequestMapping("/snf/notas")
+@RequestMapping("/snf/nota")
+@CrossOrigin(origins = "http://localhost:4200")
 public class NotaController {
 
 	private NotaRepository notaRepo;
 	private ClienteRepository clienteRepo;
 	private ItemRepository itemRepo;
 	private ProdutoRepository produtoRepo;
+	private SequenciaNotaRepository seqNotaRepo;
 	private Valida valida;
 
 	public NotaController() {
@@ -46,23 +53,27 @@ public class NotaController {
 
 	@Autowired
 	public NotaController(NotaRepository notaRepo, ClienteRepository clienteRepo, ItemRepository itemRepo,
-			Valida valida, Cadastra cadastra, ProdutoRepository produtoRepo) {
+			Valida valida, Cadastra cadastra, ProdutoRepository produtoRepo, SequenciaNotaRepository seqNotaRepo) {
 		this.notaRepo = notaRepo;
 		this.clienteRepo = clienteRepo;
 		this.itemRepo = itemRepo;
 		this.produtoRepo = produtoRepo;
 		this.valida = valida;
+		this.seqNotaRepo = seqNotaRepo;
 	}
 
 	@PostMapping
-	String cadastraNota(@RequestBody Nota nota) {
+	ResponseEntity<?> cadastraNota(@RequestBody Nota nota) {
+
+		System.out.println("\n\nValor nota: " + nota.getValorTotal() + "\n\n");
 
 		if (nota.getItens() == null || nota.getItens().size() == 0) {
-			return "! : Deve haver ao menos 1 item na nota";
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(new Response("Deve haver ao menos 1 item na nota"));
 		}
 
 		if (nota.getCliente() == null || nota.getCliente().getNome() == null) {
-			return "! : Nenhum cliente adicionado";
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("! : Nenhum cliente adicionado"));
 		} else {
 			Cliente clienteNota = clienteRepo.findByNomeIgnoreCase(nota.getCliente().getNome());
 
@@ -73,8 +84,18 @@ public class NotaController {
 			nota.setCliente(clienteNota);
 		}
 
+		SequenciaNota jaExisteSequencia = seqNotaRepo.findByIgnoreCasePara("incremento");
+
+		if (jaExisteSequencia == null) {
+			seqNotaRepo.save(new SequenciaNota(0, "incremento"));
+		}
+
+		nota.setNumero(new GeraNumero().gerar(this.seqNotaRepo));
+
+		Nota notaComId;
+
 		try {
-			Nota notaComId = notaRepo.save(nota);
+			notaComId = notaRepo.save(nota);
 
 			for (Item itemNota : nota.getItens()) {
 
@@ -91,18 +112,12 @@ public class NotaController {
 				itemRepo.save(itemNota);
 			}
 
-			String numeroNota = notaComId.getCliente().getId() + "." + notaComId.getItens().get(0).getId();
-
-			notaComId.setNumero(numeroNota);
-
-			notaRepo.save(notaComId);
-
 		} catch (Exception e) {
 			notaRepo.deleteById(nota.getId());
-			return "! : Erro ao cadastrar a nota";
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("! : Erro ao cadastrar a nota");
 		}
 
-		return "ok : nota cadastrada";
+		return ResponseEntity.ok().body(notaComId);
 	}
 
 	@GetMapping
@@ -224,8 +239,6 @@ public class NotaController {
 			}
 		}
 
-		notaExistente.setNumero(notaExistente.getCliente().getId() + "." + notaExistente.getItens().get(0).getId());
-
 		return ResponseEntity.ok(notaRepo.save(notaExistente));
 	}
 
@@ -301,8 +314,6 @@ public class NotaController {
 				notaExistente.setCliente(clienteFinal);
 			}
 		}
-
-		notaExistente.setNumero(notaExistente.getCliente().getId() + "." + notaExistente.getItens().get(0).getId());
 
 		return ResponseEntity.ok(notaRepo.save(notaExistente));
 	}

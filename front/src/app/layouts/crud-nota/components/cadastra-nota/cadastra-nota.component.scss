@@ -36,6 +36,10 @@ h1 {
   gap: 30px;
 }
 
+.aviso__itens {
+  color: red; /* Vermelho para destaque */
+}
+
 .btn__add__item {
   margin-top: 20px;
   width: 140px;
@@ -85,4 +89,17 @@ dx-list {
 
 .dado__item span {
   font-weight: 400;
+}
+
+.text__popup {
+  font-size: 1.2rem;
+  font-weight: normal;
+  overflow: hidden;
+  color: yellowgreen;
+  text-align: center;
+}
+
+.falha {
+  color: red;
+  text-align: center;
 }

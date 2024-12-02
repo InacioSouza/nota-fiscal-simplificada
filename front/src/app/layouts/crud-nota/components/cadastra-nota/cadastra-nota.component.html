@@ -12,14 +12,25 @@
         <h2>Cliente</h2>
 
         <div class="cliente">
-            <dx-select-box [(value)]="produtoSelecionado" [items]="clientes" displayExpr="nome"
+            <dx-select-box [(value)]="clienteSelecionado" [items]="clientes" displayExpr="nome"
                 placeholder="Selecione um Cliente" [searchEnabled]="true">
+            
+                <dx-validator>
+                    <dxi-validation-rule 
+                      type="required" 
+                      message="Por favor, selecione um cliente."></dxi-validation-rule>
+                  </dx-validator>
+            
             </dx-select-box>
         </div>
 
         <div class="form">
 
             <h2>Itens</h2>
+
+            <div *ngIf="semItens" class="aviso__itens" >
+                Deve conter ao menos 1 item na nota!
+            </div>
 
             <dx-select-box label="Produto" labelMode="outside" [(value)]="produtoSelecionado" [items]="produtos"
                 displayExpr="nome" placeholder="Selecione um produto" [searchEnabled]="true"
@@ -31,7 +42,7 @@
             </dx-number-box>
 
             <dx-number-box #qtd [(value)]="qtdProduto" label="Quantidade" labelMode="outside"
-                (onChange)="calculaValorTot()" format="#" [min]="1" [inputAttr]="{ 'aria-label': 'Integer Format'}">
+                (onChange)="calculaValorTotItem()" format="#" [min]="1" [inputAttr]="{ 'aria-label': 'Integer Format'}">
             </dx-number-box>
 
             <dx-number-box label="Valor total" labelMode="outside" format="R$ #,##0.##" [value]="valorTotalItem"
@@ -44,7 +55,7 @@
         <div class="list__item">
 
             <dx-list *ngIf="itens.length > 0 " [items]="itens" height="100%" [allowItemDeleting]="true"
-                [itemDeleteMode]="'static'">
+                [itemDeleteMode]="'static'" (onItemDeleted)="subtraiItemNota($event)">
 
                 <div class="item" *dxTemplate="let item of 'item'">
 
@@ -71,7 +82,7 @@
         </div>
 
         <div class="valor__nota">
-            <dx-number-box label="Valor da nota" labelMode="outside" format="R$ #,##0.##" [value]="valorTotalNota"
+            <dx-number-box label="Valor da nota" labelMode="outside" format="R$ #,##0.##" currency="BRL" [(value)]="valorTotalNota"
                 [readOnly]="true">
             </dx-number-box>
         </div>
@@ -79,5 +90,15 @@
         <dx-button class="btn__add__item" text="Emitir nota" (onClick)="emiteNota()" stylingMode="outlined"
             type="success"></dx-button>
     </div>
+
+    <dx-popup [(visible)]="verPopupOK" [title]="'Status'" [width]="350" [height]="200" [dragEnabled]="false"
+        [closeOnOutsideClick]="true" [showCloseButton]="true">
+        <p class="text__popup">Nota cadastrada com sucesso!</p>
+    </dx-popup>
+
+    <dx-popup [(visible)]="verPopupFalha" [title]="'Status'" [width]="350" [height]="200" [dragEnabled]="false"
+        [closeOnOutsideClick]="true" [showCloseButton]="true">
+        <p class="text__popup falha">Falha ao cadastrar Nota!</p>
+    </dx-popup>
 
 </div>
