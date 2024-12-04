@@ -1,0 +1,54 @@
+.nota {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+}
+
+h2{
+  font-size: 1.5rem;
+}
+
+.data__emissao, .cliente, .add__itens {
+  width: 70%;
+}
+
+.add__itens{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+dx-list{
+  box-sizing: border-box;
+  margin-top: 20px;
+  background-color: rgb(218, 216, 216);
+  border-radius: 10px;
+  display: flex;
+  padding: 10px;
+}
+
+.item {
+  display: flex;
+  justify-content: left;
+  gap: 30px;
+  background-color: rgb(196, 195, 195);
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.qtd__total, .produto__preco {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.valor__tot__emit{
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  gap: 20px;
+  margin: 50px;
+}

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
 import { Item } from '../../interfaces/Item';
 import { NotaService } from '../../services/nota.service';
 import { NotaForm } from '../../interfaces/NotaForm';
@@ -7,6 +7,7 @@ import { Produto } from 'src/app/pages/produto/interfaces/Produto';
 import { ProdutoService } from 'src/app/pages/produto/services/produto.service';
 import { Cliente } from 'src/app/pages/cliente/interfaces/Cliente';
 import { ClienteService } from 'src/app/pages/cliente/services/cliente.service';
+import notify from 'devextreme/ui/notify';
 
 @Component({
   selector: 'app-cadastra-nota',
@@ -36,8 +37,7 @@ export class CadastraNotaComponent implements OnInit {
 
   notaEmitida!: NotaForm;
 
-  verPopupOK: boolean = false;
-  verPopupFalha: boolean = false;
+  @Output() idNotaCadastrada = new EventEmitter();
 
   constructor(private clienteService: ClienteService, private produtoService: ProdutoService, private notaService: NotaService) { }
 
@@ -101,31 +101,18 @@ export class CadastraNotaComponent implements OnInit {
     this.semItens = this.itens.length === 0;
   }
 
-  limpaCampos(): void {
-    this.clienteSelecionado;
-    this.produtoSelecionado;
-    this.precoUnit = 0;
-    this.qtdProduto = 0;
-    this.itens = [];
-    this.valorTotalItem = 0;
-    this.valorTotalNota = 0;
-    alert('tentei')
-  }
 
   emiteNota(): void {
 
-    console.log(this.clienteSelecionado);
-    console.log(this.selectCliente);
-
     if (this.clienteSelecionado === undefined) {
+      notify('Selecione o cliente!', 'warning', 4000);
       this.selectCliente.isValid = false;
-      this.verPopupFalha = true;
       return;
     }
 
     if (this.itens.length === 0) {
       this.atualizaFlagSemItens();
-      this.verPopupFalha = true;
+      notify('Deve haver ao menos 1 item na nota!', 'warning', 4000);
       return;
     }
 
@@ -139,13 +126,12 @@ export class CadastraNotaComponent implements OnInit {
     }
 
     this.notaService.cadastraNota(this.notaEmitida).subscribe({
-      next: () => {
-        this.limpaCampos();
-        this.verPopupOK = true;
-        
+      next: (nota) => {
+        notify('Nota cadastrada!', 'success', 4000);
+        this.idNotaCadastrada.emit(nota.id);
       },
       error: (err) => {
-        this.verPopupFalha = true;
+        notify('Falha ao cadastrar nota!', 'error', 4000);
       }
     })
 

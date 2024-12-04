@@ -82,7 +82,7 @@ export class ListaProdutoComponent implements OnInit {
   }
 
   focoProdutoCadastrado(id: number) {
-    this.popupCadastroProduto = false;
+    this.fechaPopup();
     this.rowFocoKey = id;
   }
 }

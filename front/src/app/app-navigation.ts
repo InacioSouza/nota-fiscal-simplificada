@@ -22,16 +22,7 @@ export const navigation = [
       },
       {
         text: 'Notas',
-        items: [
-          {
-            text: 'Cadastrar',
-            path: '/nota/cadastra-nota'
-          },
-          {
-            text: 'Listar',
-            path: '/nota/lista-nota'
-          }
-        ]
+        path: '/nota'
       }
     ]
   }

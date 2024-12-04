@@ -1,15 +1,14 @@
 <div class="lista__notas">
     <div class="grid__notas">
         <dx-data-grid [dataSource]="notas" keyExpr="id" [showBorders]="true" [columnAutoWidth]="true"
-            [focusedRowEnabled]="true" [focusedRowIndex]="0">
+            [focusedRowEnabled]="true" [focusedRowIndex]="0" [focusedRowKey]="focoRowId"
+            (onToolbarPreparing)="modificaToolbar($event)">
 
             <dxo-filter-row [visible]="true"></dxo-filter-row>
 
 
             <dxo-paging [pageSize]="10"></dxo-paging>
             <dxo-pager [visible]="true" [showPageSizeSelector]="true" [allowedPageSizes]="[10, 20, 30]"></dxo-pager>
-
-            <dxo-editing mode="row" [allowAdding]="existemDados"></dxo-editing>
 
             <dxo-master-detail [enabled]="true" template="detail"></dxo-master-detail>
 
@@ -37,5 +36,10 @@
             <dxi-column alignment="left" width="220" dataField="valorTotal" caption="Valor Total"
                 [format]=" {type: 'currency', currency: 'BRL' }"></dxi-column>
         </dx-data-grid>
+
+        <dx-popup [visible]="exibePopupNota" title="Cadastro de Nota" width="600" height="700" [dragEnabled]="false"
+            [closeOnOutsideClick]="true" [showCloseButton]="true" (onHiding)="fechaPopup()">
+            <app-cadastra-nota (idNotaCadastrada)="focoNotaCadastrada($event)"></app-cadastra-nota>
+        </dx-popup>
     </div>
 </div>

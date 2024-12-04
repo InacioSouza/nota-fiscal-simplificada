@@ -12,18 +12,16 @@ import { UnauthenticatedContentModule } from './unauthenticated-content';
 import { AppRoutingModule } from './app-routing.module';
 import { LocalidadeComponent } from './shared/components/localidade/localidade.component';
 import { SelectBoxComponent } from './pages/select-box/select-box.component';
-import { CrudNotaModule } from './layouts/crud-nota/crud-nota.module';
-import { NotaComponent } from './pages/nota/nota.component';
 import { ProdutoModule } from './pages/produto/produto.module';
 import { ClienteModule } from './pages/cliente/cliente.module';
+import { NotaModule } from './pages/nota/nota.module';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     LocalidadeComponent,
-    SelectBoxComponent,
-    NotaComponent
+    SelectBoxComponent
   ],
   imports: [
     BrowserModule,
@@ -39,9 +37,9 @@ import { ClienteModule } from './pages/cliente/cliente.module';
     LoginFormModule,
     UnauthenticatedContentModule,
     AppRoutingModule,
-    CrudNotaModule,
     ProdutoModule,
-    ClienteModule
+    ClienteModule,
+    NotaModule
   ],
   providers: [
     AuthService,

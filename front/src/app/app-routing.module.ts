@@ -5,11 +5,9 @@ import { AuthGuardService } from './shared/services';
 import { HomeComponent } from './pages/home/home.component';
 import { DxDataGridModule, DxFormModule } from 'devextreme-angular';
 import { SelectBoxComponent } from './pages/select-box/select-box.component';
-import { NotaComponent } from './pages/nota/nota.component';
-import { CadastraNotaComponent } from './layouts/crud-nota/components/cadastra-nota/cadastra-nota.component';
-import { ListaNotaComponent } from './layouts/crud-nota/components/lista-nota/lista-nota.component';
 import { ListaProdutoComponent } from './pages/produto/components/lista-produto/lista-produto.component';
 import { ListaClienteComponent } from './pages/cliente/components/lista-cliente/lista-cliente.component';
+import { ListaNotaComponent } from './pages/nota/components/lista-nota/lista-nota.component';
 
 const routes: Routes = [
   {
@@ -27,20 +25,7 @@ const routes: Routes = [
   },
   {
     path: 'nota',
-    component: NotaComponent,
-    children: [
-      {
-        path: 'cadastra-nota',
-        component: CadastraNotaComponent,
-        canActivate: [AuthGuardService]
-      },
-      {
-        path: 'lista-nota',
-        component: ListaNotaComponent,
-        canActivate: [AuthGuardService]
-      }
-    ],
-    canActivate: [AuthGuardService]
+    component: ListaNotaComponent
   },
   {
     path: 'home',

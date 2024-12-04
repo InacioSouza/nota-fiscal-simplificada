@@ -1,0 +1,94 @@
+<div class="nota">
+
+    <div class="data__emissao">
+
+        <h2>Data de emissão</h2>
+
+        <dx-date-box type="date" [value]="dataHoje" width="150" [inputAttr]="{ 'aria-label': 'Date' }"
+            [readOnly]="true"></dx-date-box>
+    </div>
+
+    <div class="cliente">
+
+        <h2>Cliente</h2>
+
+        <dx-select-box [(value)]="clienteSelecionado" width="300" [items]="clientes" displayExpr="nome"
+            placeholder="Selecione um Cliente" [searchEnabled]="true">
+
+            <dx-validator>
+                <dxi-validation-rule type="required" message="Por favor, selecione um cliente."></dxi-validation-rule>
+            </dx-validator>
+
+        </dx-select-box>
+    </div>
+
+    <div class="add__itens">
+
+        <h2>Itens</h2>
+
+        <div *ngIf="semItens" class="aviso__itens">
+            Deve conter ao menos 1 item na nota!
+        </div>
+
+        <dx-select-box label="Produto" labelMode="outside" width="300" [(value)]="produtoSelecionado" [items]="produtos"
+            displayExpr="nome" placeholder="Selecione um produto" [searchEnabled]="true"
+            (onValueChanged)="mostraPrecoUnit($event)">
+        </dx-select-box>
+
+        <dx-number-box label="Preço unitário" labelMode="outside" width="150" format="R$ #,##0.##" [value]="precoUnit"
+            [readOnly]="true">
+        </dx-number-box>
+
+        <dx-number-box #qtd [(value)]="qtdProduto" label="Quantidade" width="150" labelMode="outside"
+            (onChange)="calculaValorTotItem()" format="#" [min]="1" [inputAttr]="{ 'aria-label': 'Integer Format'}">
+        </dx-number-box>
+
+        <dx-number-box label="Valor total" labelMode="outside" width="150" format="R$ #,##0.##" [value]="valorTotalItem"
+            [readOnly]="true"></dx-number-box>
+
+        <dx-button class="btn__add__item" text="Adicionar" width="130" (onClick)="adicionaItem()" stylingMode="outlined"
+            type="normal"></dx-button>
+    </div>
+
+
+
+    <dx-list *ngIf="itens.length > 0 " [items]="itens" height="100%" [allowItemDeleting]="true"
+        [itemDeleteMode]="'toggle'" (onItemDeleted)="subtraiItemNota($event)">
+
+        <div class="item" *dxTemplate="let item of 'item'">
+
+            <div class="produto__preco">
+
+                <div class="dado__item">
+                    <strong>Produto:</strong> {{item.produto.nome}}
+                </div>
+
+                <div class="dado__item">
+                    <strong>Preço unitário: </strong> {{ item.produto.preco | currency}}
+                </div>
+
+            </div>
+
+            <div class="qtd__total">
+                <div class="dado__item">
+                    <strong>Quantidade: </strong> {{ item.quantidade }}
+                </div>
+
+                <div class="dado__item">
+                    <strong>Total: </strong> {{ item.valorTotal | currency}}
+                </div>
+            </div>
+
+        </div>
+    </dx-list>
+
+
+    <div class="valor__tot__emit">
+        <dx-number-box label="Valor da nota" [width]="150" labelMode="outside" format="R$ #,##0.##" currency="BRL"
+            [(value)]="valorTotalNota" [readOnly]="true">
+        </dx-number-box>
+
+        <dx-button class="btn__add__item" [width]="200" text="Emitir nota" (onClick)="emiteNota()" stylingMode="outlined"
+            type="success"></dx-button>
+    </div>
+</div>
