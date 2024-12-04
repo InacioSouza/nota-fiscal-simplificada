@@ -10,18 +10,21 @@ import { ClienteComponent } from './pages/cliente/cliente.component';
 import { CrudClienteModule } from './layouts/crud-cliente/crud-cliente.module';
 import { CadastraClienteComponent } from './layouts/crud-cliente/components/cadastra-cliente/cadastra-cliente.component';
 import { ListaClienteComponent } from './layouts/crud-cliente/components/lista-cliente/lista-cliente.component';
-import { ProdutoComponent } from './pages/produto/produto.component';
-import { CadastraProdutoComponent } from './layouts/crud-produto/components/cadastra-produto/cadastra-produto.component';
-import { ListaProdutoComponent } from './layouts/crud-produto/components/lista-produto/lista-produto.component';
 import { NotaComponent } from './pages/nota/nota.component';
 import { CadastraNotaComponent } from './layouts/crud-nota/components/cadastra-nota/cadastra-nota.component';
 import { ListaNotaComponent } from './layouts/crud-nota/components/lista-nota/lista-nota.component';
+import { ListaProdutoComponent } from './pages/produto/components/lista-produto/lista-produto.component';
+import { CadastraProdutoComponent } from './pages/produto/components/cadastra-produto/cadastra-produto.component';
 
 const routes: Routes = [
   {
     path: 'select-box',
     component: SelectBoxComponent,
     canActivate: [AuthGuardService]
+  },
+  {
+    path: 'produto',
+    component: ListaProdutoComponent
   },
   {
     path: 'cliente',
@@ -36,23 +39,6 @@ const routes: Routes = [
       {
         path: 'cadastra-cliente',
         component: CadastraClienteComponent,
-        canActivate: [AuthGuardService]
-      }
-    ],
-    canActivate: [AuthGuardService]
-  },
-  {
-    path: 'produto',
-    component: ProdutoComponent,
-    children: [
-      {
-        path: 'cadastra-produto',
-        component: CadastraProdutoComponent,
-        canActivate: [AuthGuardService]
-      },
-      {
-        path: 'lista-produto',
-        component: ListaProdutoComponent,
         canActivate: [AuthGuardService]
       }
     ],

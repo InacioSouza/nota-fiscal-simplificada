@@ -27,16 +27,7 @@ export const navigation = [
       },
       {
         text: 'Produto',
-        items: [
-          {
-            text: 'Cadastrar',
-            path: '/produto/cadastra-produto'
-          },
-          {
-            text: 'Listar',
-            path: '/produto/lista-produto'
-          }
-        ]
+        path: '/produto',
       },
       {
         text: 'Nota',

@@ -1,0 +1,33 @@
+<div class="cadastra-produto">
+
+    <div class="inputs">
+
+        <dx-form [(formData)]="produtoForm">
+
+            <dxi-item dataField="nome" [label]="{ text: 'Nome' }"
+                [editorOptions]="{placeholder: 'Digite o nome do produto' }">
+
+                <dxi-validation-rule type="required" message="digite um nome para o produto"></dxi-validation-rule>
+
+            </dxi-item>
+
+            <dxi-item dataField="preco" [label]="{text: 'Preço'}" [editorType]="'dxNumberBox'" [editorOptions]="{
+                    format: 'R$ #,##0.##',
+                    inputAttr: { 'aria-label': 'Currency Format' },
+                    min: 0.1
+                    ,placeholder: '0.00',
+                    }">
+
+                <dxi-validation-rule type="required" message="digite um preço para o produto"></dxi-validation-rule>
+
+                <dxi-validation-rule type="pattern" pattern="^(?!0$).*" message="O valor não pode ser igual a zero">
+                </dxi-validation-rule>
+
+            </dxi-item>
+
+            <dxi-item itemType="button" [buttonOptions]="buttonOptions"></dxi-item>
+
+        </dx-form>
+    </div>
+
+</div>
