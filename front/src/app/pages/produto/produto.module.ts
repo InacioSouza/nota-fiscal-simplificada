@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { DependenciasModule } from 'src/app/layouts/dependencias/dependencias.module';
 import { CadastraProdutoComponent } from './components/cadastra-produto/cadastra-produto.component';
 import { ListaProdutoComponent } from './components/lista-produto/lista-produto.component';
-import { CrudClienteModule } from "../../layouts/crud-cliente/crud-cliente.module";
 
 
 
@@ -13,7 +12,6 @@ import { CrudClienteModule } from "../../layouts/crud-cliente/crud-cliente.modul
   imports: [
     CommonModule,
     DependenciasModule,
-    CrudClienteModule
 ]
 })
 export class ProdutoModule { }

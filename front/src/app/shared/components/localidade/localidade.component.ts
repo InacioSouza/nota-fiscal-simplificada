@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, OnChanges, SimpleChange
 import { EstadoService } from './services/estado-service.service';
 import { MunicipioService } from './services/municipio.service';
 import { UF } from './interfaces/UF';
+import { AppInfoService } from '../../services';
 
 @Component({
   selector: 'app-localidade',
@@ -21,11 +22,13 @@ export class LocalidadeComponent implements OnInit {
   @Output() ufSelecionadaChange = new EventEmitter<string>();
   @Output() municipioSelecionadoChange = new EventEmitter<string>();
 
-  constructor(private estadoService: EstadoService, private municipioService: MunicipioService) {
+  constructor(private estadoService: EstadoService, private municipioService: MunicipioService, private appInfo: AppInfoService) {
 
   }
 
   ngOnInit(): void {
+
+    this.appInfo.title = 'Localidade'
 
     this.estadoService.listaUF().subscribe((ufs: UF[]) => {
       this.ufs = ufs.map(uf => uf.sigla + ' - ' + uf.nome);

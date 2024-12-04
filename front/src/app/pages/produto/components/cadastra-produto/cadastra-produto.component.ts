@@ -48,14 +48,15 @@ export class CadastraProdutoComponent {
     if (resultadoValidacao.isValid) {
       this.produtoService.cadastra(this.produto).subscribe({
         next: (produto) => {
-          notify('Produto cadastrado!', 'success', 2000)
+          notify('Produto cadastrado!', 'success', 3000);
+          
           this.form.instance.getEditor('nome')?.reset();
           this.form.instance.getEditor('preco')?.reset();
 
           this.idProdutoCadastrado.emit(produto.id);
         },
         error: (err) => {
-          notify('Falha ao cadastrar produto!', 'error', 2000)
+          notify('Falha ao cadastrar produto!', 'error', 3000)
         }
       });
     }

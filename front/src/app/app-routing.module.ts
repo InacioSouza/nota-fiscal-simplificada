@@ -4,17 +4,12 @@ import { LoginFormComponent, ResetPasswordFormComponent, CreateAccountFormCompon
 import { AuthGuardService } from './shared/services';
 import { HomeComponent } from './pages/home/home.component';
 import { DxDataGridModule, DxFormModule } from 'devextreme-angular';
-import { LocalidadeComponent } from './shared/components/localidade/localidade.component';
 import { SelectBoxComponent } from './pages/select-box/select-box.component';
-import { ClienteComponent } from './pages/cliente/cliente.component';
-import { CrudClienteModule } from './layouts/crud-cliente/crud-cliente.module';
-import { CadastraClienteComponent } from './layouts/crud-cliente/components/cadastra-cliente/cadastra-cliente.component';
-import { ListaClienteComponent } from './layouts/crud-cliente/components/lista-cliente/lista-cliente.component';
 import { NotaComponent } from './pages/nota/nota.component';
 import { CadastraNotaComponent } from './layouts/crud-nota/components/cadastra-nota/cadastra-nota.component';
 import { ListaNotaComponent } from './layouts/crud-nota/components/lista-nota/lista-nota.component';
 import { ListaProdutoComponent } from './pages/produto/components/lista-produto/lista-produto.component';
-import { CadastraProdutoComponent } from './pages/produto/components/cadastra-produto/cadastra-produto.component';
+import { ListaClienteComponent } from './pages/cliente/components/lista-cliente/lista-cliente.component';
 
 const routes: Routes = [
   {
@@ -28,21 +23,7 @@ const routes: Routes = [
   },
   {
     path: 'cliente',
-    component: ClienteComponent,
-    children: [
-      {
-        path: 'lista-cliente',
-        component: ListaClienteComponent,
-        canActivate: [AuthGuardService]
-      },
-
-      {
-        path: 'cadastra-cliente',
-        component: CadastraClienteComponent,
-        canActivate: [AuthGuardService]
-      }
-    ],
-    canActivate: [AuthGuardService]
+    component: ListaClienteComponent
   },
   {
     path: 'nota',
@@ -93,7 +74,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { useHash: true }), DxDataGridModule, DxFormModule, CrudClienteModule],
+  imports: [RouterModule.forRoot(routes, { useHash: true }), DxDataGridModule, DxFormModule],
   providers: [AuthGuardService],
   exports: [RouterModule],
   declarations: [

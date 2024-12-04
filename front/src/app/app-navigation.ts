@@ -14,23 +14,14 @@ export const navigation = [
       },
       {
         text: 'Clientes',
-        items: [
-          {
-            text: 'Cadastrar',
-            path: '/cliente/cadastra-cliente'
-          },
-          {
-            text: 'listar',
-            path: '/cliente/lista-cliente'
-          }
-        ]
+        path: '/cliente'
       },
       {
-        text: 'Produto',
+        text: 'Produtos',
         path: '/produto',
       },
       {
-        text: 'Nota',
+        text: 'Notas',
         items: [
           {
             text: 'Cadastrar',

@@ -52,7 +52,6 @@ export class ListaProdutoComponent implements OnInit {
   }
 
   exibirPopupCadastro(): void {
-    console.log(this.popupCadastroProduto);
     this.popupCadastroProduto = true;
   }
 

@@ -1,7 +1,8 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { Cliente } from '../../interfaces/Cliente';
 import { ClienteService } from '../../services/cliente.service';
 import { DxFormComponent } from 'devextreme-angular';
+import notify from 'devextreme/ui/notify';
 
 @Component({
   selector: 'app-cadastra-cliente',
@@ -9,9 +10,6 @@ import { DxFormComponent } from 'devextreme-angular';
   styleUrls: ['./cadastra-cliente.component.scss']
 })
 export class CadastraClienteComponent {
-
-  verPopupOK: boolean = false;
-  verPopupFalha: boolean = false;
 
   cliente!: Cliente;
 
@@ -22,6 +20,8 @@ export class CadastraClienteComponent {
     type: "success",
     onClick: () => this.cadastraCliente()
   };
+
+  @Output() idClienteCadastrado = new EventEmitter();
 
   constructor(private clienteService: ClienteService) {
 
@@ -34,13 +34,16 @@ export class CadastraClienteComponent {
     if (reultadoValidacao.isValid) {
 
       this.clienteService.cadastra(this.cliente).subscribe({
-        next: () => {
-          this.verPopupOK = true;
+        next: (cliente) => {
+          notify('Cliente cadastrado!', 'success', 3000);
+
           this.form.instance.updateData('nome', '');
           this.form.instance.getEditor('nome')?.reset();
+
+          this.idClienteCadastrado.emit(cliente.id);
         },
         error: (err) => {
-          this.verPopupFalha = true;
+          notify('Falha ao cadastrar cliente!', 'error', 3000)
         }
       })
     }

@@ -12,11 +12,10 @@ import { UnauthenticatedContentModule } from './unauthenticated-content';
 import { AppRoutingModule } from './app-routing.module';
 import { LocalidadeComponent } from './shared/components/localidade/localidade.component';
 import { SelectBoxComponent } from './pages/select-box/select-box.component';
-import { ClienteComponent } from './pages/cliente/cliente.component';
-import { CrudClienteModule } from './layouts/crud-cliente/crud-cliente.module';
 import { CrudNotaModule } from './layouts/crud-nota/crud-nota.module';
 import { NotaComponent } from './pages/nota/nota.component';
 import { ProdutoModule } from './pages/produto/produto.module';
+import { ClienteModule } from './pages/cliente/cliente.module';
 
 
 @NgModule({
@@ -24,7 +23,6 @@ import { ProdutoModule } from './pages/produto/produto.module';
     AppComponent,
     LocalidadeComponent,
     SelectBoxComponent,
-    ClienteComponent,
     NotaComponent
   ],
   imports: [
@@ -41,9 +39,9 @@ import { ProdutoModule } from './pages/produto/produto.module';
     LoginFormModule,
     UnauthenticatedContentModule,
     AppRoutingModule,
-    CrudClienteModule,
     CrudNotaModule,
-    ProdutoModule
+    ProdutoModule,
+    ClienteModule
   ],
   providers: [
     AuthService,
