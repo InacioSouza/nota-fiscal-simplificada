@@ -1,3 +1,4 @@
+import { AppInfoService } from './../../../../shared/services/app-info.service';
 import { Component, OnInit } from '@angular/core';
 import { Produto } from '../../interfaces/Produto';
 import { ProdutoService } from '../../services/produto.service';
@@ -27,12 +28,13 @@ export class ListaProdutoComponent implements OnInit {
 
   toolbarModificada: boolean = false;
 
-  constructor(private produtoService: ProdutoService, private router: Router) {
+  constructor(private produtoService: ProdutoService, private router: Router, private appInfo: AppInfoService) {
 
   }
 
   ngOnInit(): void {
     this.carregaDataGrid();
+    this.appInfo.title = 'Produtos'
   }
 
   carregaDataGrid(): void {
@@ -80,7 +82,7 @@ export class ListaProdutoComponent implements OnInit {
     this.toolbarModificada = true;
   }
 
-  focoProdutoCadastrado(id: number){
+  focoProdutoCadastrado(id: number) {
     this.popupCadastroProduto = false;
     this.rowFocoKey = id;
   }

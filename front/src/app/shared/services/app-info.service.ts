@@ -2,11 +2,10 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class AppInfoService {
-  constructor() {}
+  constructor() { }
 
-  public get title() {
-    return 'Nota Fiscal';
-  }
+  public title: string = 'Nota Fiscal';
+
 
   public get currentYear() {
     return new Date().getFullYear();

@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Item } from '../../interfaces/Item';
 import { NotaService } from '../../services/nota.service';
-import { Produto } from 'src/app/layouts/crud-produto/interfaces/Produto';
-import { ProdutoService } from 'src/app/layouts/crud-produto/services/produto.service';
 import { Cliente } from 'src/app/layouts/crud-cliente/interfaces/Cliente';
 import { ClienteService } from 'src/app/layouts/crud-cliente/services/cliente.service';
 import { NotaForm } from '../../interfaces/NotaForm';
 import { DxSelectBoxComponent } from 'devextreme-angular';
+import { Produto } from 'src/app/pages/produto/interfaces/Produto';
+import { ProdutoService } from 'src/app/pages/produto/services/produto.service';
 
 @Component({
   selector: 'app-cadastra-nota',

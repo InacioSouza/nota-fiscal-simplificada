@@ -1,4 +1,4 @@
-import { Produto } from "../../crud-produto/interfaces/Produto";
+import { Produto } from "src/app/pages/produto/interfaces/Produto";
 
 export interface Item {
     id: number,
