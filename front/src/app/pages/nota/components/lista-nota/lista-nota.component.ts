@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NotaService } from '../../services/nota.service';
 import { Nota } from '../../interfaces/Nota';
-import { Item } from '../../interfaces/Item';
 import { AppInfoService } from 'src/app/shared/services';
 
 @Component({

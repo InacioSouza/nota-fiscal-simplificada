@@ -1,4 +1,5 @@
 .nota {
+  box-sizing: border-box;
   display: flex;
   justify-content: center;
   width: 100%;
@@ -6,21 +7,39 @@
   align-items: center;
 }
 
-h2{
+h2 {
   font-size: 1.5rem;
 }
 
-.data__emissao, .cliente, .add__itens {
+.data__emissao,
+.cliente,
+.add__itens {
   width: 70%;
 }
 
-.add__itens{
+.dt__cliente {
+  display: flex;
+  flex-direction: column;
+}
+
+.dados__nota {
+  display: flex;
+  width: 90%;
+  justify-content: center;
+  gap: 7%;
+}
+
+.itens {
+  width: 55%;
+}
+
+.add__itens {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-dx-list{
+dx-list {
   box-sizing: border-box;
   margin-top: 20px;
   background-color: rgb(218, 216, 216);
@@ -38,22 +57,24 @@ dx-list{
   margin-bottom: 10px;
 }
 
-.qtd__total, .produto__preco {
+.qtd__total,
+.produto__preco {
   display: flex;
   flex-direction: column;
   align-items: left;
 }
 
-.valor__tot__emit{
-  width: 70%;
+.valor__tot__emit {
+  width: 90%;
   display: flex;
   flex-direction: column;
   align-items: left;
   gap: 20px;
-  margin: 50px;
+  margin-top: 70px;
+  margin-left: 10%;
 }
 
-.aviso__itens{
+.aviso__itens {
   color: red;
   font-size: 1.2rem;
 }

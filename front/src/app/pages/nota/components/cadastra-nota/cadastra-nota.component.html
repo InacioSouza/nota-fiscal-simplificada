@@ -1,94 +1,105 @@
 <div class="nota">
 
-    <div class="data__emissao">
+    <div class="dados__nota">
+        <div class="dt__cliente">
 
-        <h2>Data de emissão</h2>
+            <div class="data__emissao">
 
-        <dx-date-box type="date" [value]="dataHoje" width="150" [inputAttr]="{ 'aria-label': 'Date' }"
-            [readOnly]="true"></dx-date-box>
-    </div>
+                <h2>Data de emissão</h2>
 
-    <div class="cliente">
-
-        <h2>Cliente</h2>
-
-        <dx-select-box [(value)]="clienteSelecionado" width="300" [items]="clientes" displayExpr="nome"
-            placeholder="Selecione um Cliente" [searchEnabled]="true">
-
-            <dx-validator>
-                <dxi-validation-rule type="required" message="Por favor, selecione um cliente."></dxi-validation-rule>
-            </dx-validator>
-
-        </dx-select-box>
-    </div>
-
-    <div class="add__itens">
-
-        <h2>Itens</h2>
-
-        <div *ngIf="semItens" class="aviso__itens">
-            Deve conter ao menos 1 item na nota!
-        </div>
-
-        <dx-select-box label="Produto" labelMode="outside" width="300" [(value)]="produtoSelecionado" [items]="produtos"
-            displayExpr="nome" placeholder="Selecione um produto" [searchEnabled]="true"
-            (onValueChanged)="mostraPrecoUnit($event)">
-        </dx-select-box>
-
-        <dx-number-box label="Preço unitário" labelMode="outside" width="150" format="R$ #,##0.##" [value]="precoUnit"
-            [readOnly]="true">
-        </dx-number-box>
-
-        <dx-number-box #qtd [(value)]="qtdProduto" label="Quantidade" width="150" labelMode="outside"
-            (onChange)="calculaValorTotItem()" format="#" [min]="1" [inputAttr]="{ 'aria-label': 'Integer Format'}">
-        </dx-number-box>
-
-        <dx-number-box label="Valor total" labelMode="outside" width="150" format="R$ #,##0.##" [value]="valorTotalItem"
-            [readOnly]="true"></dx-number-box>
-
-        <dx-button class="btn__add__item" text="Adicionar" width="130" (onClick)="adicionaItem()" stylingMode="outlined"
-            type="normal"></dx-button>
-    </div>
-
-
-
-    <dx-list *ngIf="itens.length > 0 " [items]="itens" height="100%" [allowItemDeleting]="true"
-        [itemDeleteMode]="'toggle'" (onItemDeleted)="subtraiItemNota($event)">
-
-        <div class="item" *dxTemplate="let item of 'item'">
-
-            <div class="produto__preco">
-
-                <div class="dado__item">
-                    <strong>Produto:</strong> {{item.produto.nome}}
-                </div>
-
-                <div class="dado__item">
-                    <strong>Preço unitário: </strong> {{ item.produto.preco | currency}}
-                </div>
-
+                <dx-date-box type="date" [value]="dataHoje" width="170"
+                    [inputAttr]="{ 'aria-label': 'Date' }"></dx-date-box>
             </div>
 
-            <div class="qtd__total">
-                <div class="dado__item">
-                    <strong>Quantidade: </strong> {{ item.quantidade }}
+            <div class="cliente">
+
+                <h2>Cliente</h2>
+
+                <dx-select-box [(value)]="clienteSelecionado" width="300" [items]="clientes" displayExpr="nome"
+                    placeholder="Selecione um Cliente" [searchEnabled]="true">
+
+                    <dx-validator>
+                        <dxi-validation-rule type="required"
+                            message="Por favor, selecione um cliente."></dxi-validation-rule>
+                    </dx-validator>
+
+                </dx-select-box>
+            </div>
+        </div>
+
+
+        <!---->
+
+        <div class="itens">
+
+            <h2>Itens</h2>
+
+            <dx-data-grid #vamos [dataSource]="itensFormDataSource" [showBorders]="true" [columnAutoWidth]="true">
+
+                <dxo-editing mode="row" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true"
+                    [useIcons]="true"></dxo-editing>
+
+
+
+                <dxi-column caption="Produto" dataField="produto.nome" editCellTemplate="produto"></dxi-column>
+
+                <dxi-column caption="Preço Unitário" dataField="precoUnitario" [allowEditing]="true"
+                    editCellTemplate="precoUnit" hidingPriority="1"></dxi-column>
+
+                <dxi-column caption="Quantidade" dataField="quantidade" editCellTemplate="qtdProduto"></dxi-column>
+
+                <dxi-column caption="Valor Total" dataField="valorTotal" [allowEditing]="true"
+                    editCellTemplate="valorTot"></dxi-column>
+
+
+                <dxi-column type="buttons" [width]="110" [buttons]="customButtons">
+                    <dxi-button hint="Salvar" icon="save" [visible]="isCloneIconVisible" [onClick]="addItem()"></dxi-button>
+                    <dxi-button name="save" [visible]="false" [disabled]="true"></dxi-button>
+                    <dxi-button name="edit"></dxi-button>
+                    <dxi-button name="delete"></dxi-button>
+                </dxi-column>
+
+                <dxo-toolbar>
+                    <dxi-item name="addRowButton" showText="always" [options]="{text: 'novo item'}"></dxi-item>
+                </dxo-toolbar>
+
+                <div *dxTemplate="let selectPdt of 'produto'">
+                    <dx-select-box [items]="produtos" [(value)]="produtoSelecionado" displayExpr="nome"
+                        placeholder="Selecione um produto" [searchEnabled]="true"
+                        (onValueChanged)="mostraPrecoUnit($event)">
+                    </dx-select-box>
                 </div>
 
-                <div class="dado__item">
-                    <strong>Total: </strong> {{ item.valorTotal | currency}}
+                <div *dxTemplate="let preco of 'precoUnit'">
+                    <p>{{ precoUnit | currency }}</p>
                 </div>
-            </div>
+
+                <div *dxTemplate="let qtd of 'qtdProduto'">
+                    <dx-number-box [(value)]="qtdProduto" format="#" [min]="1"
+                        [inputAttr]="{ 'aria-label': 'Integer Format'}" (onChange)="calculaValorItem()"
+                        (onValueChanged)="vinculaPdtTemplateAPdtData($event, qtd.row.data)">
+
+                    </dx-number-box>
+                </div>
+
+
+
+                <div *dxTemplate="let valorT of 'valorTot'">
+                    <p>{{valorTotalItem | currency}}</p>
+                </div>
+
+            </dx-data-grid>
 
         </div>
-    </dx-list>
 
+    </div>
 
     <div class="valor__tot__emit">
         <dx-number-box label="Valor da nota" [width]="150" labelMode="outside" format="R$ #,##0.##" currency="BRL"
             [(value)]="valorTotalNota" [readOnly]="true">
         </dx-number-box>
 
-        <dx-button class="btn__add__item" [width]="200" text="Emitir nota" (onClick)="emiteNota()" stylingMode="outlined"
+        <dx-button class="btn__add__item" [width]="200" text="Emitir nota" (onClick)="0" stylingMode="outlined"
             type="success"></dx-button>
     </div>
 </div>

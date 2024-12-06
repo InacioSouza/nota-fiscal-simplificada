@@ -37,7 +37,7 @@
                 [format]=" {type: 'currency', currency: 'BRL' }"></dxi-column>
         </dx-data-grid>
 
-        <dx-popup [visible]="exibePopupNota" title="Cadastro de Nota" width="600" height="700" [dragEnabled]="false"
+        <dx-popup [visible]="exibePopupNota" title="Cadastro de Nota" width="80%" height="700" [dragEnabled]="false"
             [closeOnOutsideClick]="true" [showCloseButton]="true" (onHiding)="fechaPopup()">
             <app-cadastra-nota (idNotaCadastrada)="focoNotaCadastrada($event)"></app-cadastra-nota>
         </dx-popup>

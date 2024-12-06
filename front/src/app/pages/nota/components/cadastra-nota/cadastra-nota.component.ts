@@ -1,5 +1,8 @@
-import { Component, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
+import { DxButtonModule } from 'devextreme-angular/ui/button';
+import { Component, OnInit, ViewChild, EventEmitter, Output, enableProdMode } from '@angular/core';
 import { Item } from '../../interfaces/Item';
+import { ItemForm } from '../../interfaces/ItemForm';
+
 import { NotaService } from '../../services/nota.service';
 import { NotaForm } from '../../interfaces/NotaForm';
 import { DxSelectBoxComponent } from 'devextreme-angular';
@@ -8,6 +11,9 @@ import { ProdutoService } from 'src/app/pages/produto/services/produto.service';
 import { Cliente } from 'src/app/pages/cliente/interfaces/Cliente';
 import { ClienteService } from 'src/app/pages/cliente/services/cliente.service';
 import notify from 'devextreme/ui/notify';
+import { DxDataGridModule, DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
+
+type FirstArgument<T> = T extends (...args: any) => any ? Parameters<T>[0] : never;
 
 @Component({
   selector: 'app-cadastra-nota',
@@ -18,16 +24,15 @@ export class CadastraNotaComponent implements OnInit {
 
   dataHoje: Date = new Date();
 
-  clientes!: Cliente[];
   clienteSelecionado!: Cliente;
-  @ViewChild(DxSelectBoxComponent, { static: false }) selectCliente!: DxSelectBoxComponent;
 
-  produtos!: Produto[];
-  itens: Item[] = [];
+  clientes!: Cliente[];
 
-  semItens = false;
+  itensFormDataSource: ItemForm[] = [];
 
   produtoSelecionado!: Produto;
+
+  produtos!: Produto[];
 
   precoUnit: number = 0;
   qtdProduto: number = 0;
@@ -35,106 +40,71 @@ export class CadastraNotaComponent implements OnInit {
 
   valorTotalNota: number = 0;
 
-  notaEmitida!: NotaForm;
 
-  @Output() idNotaCadastrada = new EventEmitter();
+  customButtons = [
+    {
+      name: 'save',
+      text: 'save',
+      icon: 'save',
+      onClick: (e: any) => console.log('Save')
+    }
+    /*
+    {
+      name: 'edit',
+      text: 'Edit',
+      icon: 'edit',
+      onClick: (e: any) => console.log('Sobrescrevi o comportamento do edit!'),
+    },
+    {
+      name: 'delete',
+      text: 'Delete',
+      icon: 'trash',
+      onClick: (e: any) => console.log('Sobrescrevi o comportamento do delete!'),
+    },
+     */
+  ]
 
-  constructor(private clienteService: ClienteService, private produtoService: ProdutoService, private notaService: NotaService) { }
+  constructor(private produtoService: ProdutoService) { }
 
   ngOnInit(): void {
-
-    this.clienteService.lista().subscribe(
-      result => this.clientes = result
-    );
-
-    this.produtoService.lista().subscribe(result => {
-      this.produtos = result;
-    })
-
+    this.produtoService.lista().subscribe(result => this.produtos = result);
   }
 
-  mostraPrecoUnit(event: any) {
-    this.precoUnit = event.value.preco;
-    this.calculaValorTotItem(); //caso o usuário selecione a qtd de produtos antes
+  mostraPrecoUnit(produto: any): void {
+    this.precoUnit = produto.value.preco;
+    console.log(this.precoUnit)
+    this.calculaValorItem();
   }
 
-  calculaValorTotItem() {
-
-    if (this.produtoSelecionado) {
+  calculaValorItem(): void {
+    if (this.precoUnit != 0 && this.qtdProduto != 0) {
       this.valorTotalItem = this.precoUnit * this.qtdProduto;
     }
+
+    console.log(this.valorTotalItem);
   }
 
-  adicionaItem(): void {
+  addItem(): void {
 
-    const item: Item = {
-      id: 0,
+    const itemFormAdd: ItemForm = {
       produto: this.produtoSelecionado,
+      precoUnitario: this.precoUnit,
       quantidade: this.qtdProduto,
       valorTotal: this.valorTotalItem
     }
 
-    if (this.itens.find(itemArray => itemArray.produto.id === item.produto.id))
-      return;
-
-    if (this.produtoSelecionado && this.qtdProduto > 0) {
-
-      this.itens.push(item);
-
-      this.calculaValorTotNota(item);
-    }
-
-    this.atualizaFlagSemItens();
-  }
-
-  calculaValorTotNota(item: Item): void {
-    this.valorTotalNota += item.valorTotal;
-  }
-
-  subtraiItemNota(event: any): void {
-    console.log('Evento:\n', event)
-    this.valorTotalNota -= event.itemData.valorTotal;
-    this.atualizaFlagSemItens();
-  }
-
-  atualizaFlagSemItens(): void {
-    this.semItens = this.itens.length === 0;
+    console.log(itemFormAdd)
   }
 
 
-  emiteNota(): void {
+  isCloneIconVisible({ row }: FirstArgument<DxDataGridTypes.ColumnButton['visible']>) {
+    return row!.isEditing;
+  }
 
-    if (this.clienteSelecionado === undefined) {
-      notify('Selecione o cliente!', 'warning', 4000);
-      this.selectCliente.isValid = false;
-      return;
-    }
-
-    if (this.itens.length === 0) {
-      this.atualizaFlagSemItens();
-      notify('Deve haver ao menos 1 item na nota!', 'warning', 4000);
-      return;
-    }
-
-
-
-    this.notaEmitida = {
-      cliente: this.clienteSelecionado,
-      itens: this.itens,
-      data_emissao: this.dataHoje,
-      valorTotal: this.valorTotalNota
-    }
-
-    this.notaService.cadastraNota(this.notaEmitida).subscribe({
-      next: (nota) => {
-        notify('Nota cadastrada!', 'success', 4000);
-        this.idNotaCadastrada.emit(nota.id);
-      },
-      error: (err) => {
-        notify('Falha ao cadastrar nota!', 'error', 4000);
-      }
-    })
-
+  vinculaPdtTemplateAPdtData(event: any, rowData: any): void {
+    rowData['produto'] = event.value;
   }
 
 }
+
+
