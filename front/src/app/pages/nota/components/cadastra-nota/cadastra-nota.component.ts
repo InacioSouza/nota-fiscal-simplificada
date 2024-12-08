@@ -1,3 +1,4 @@
+import { DxDrawerModule } from 'devextreme-angular/ui/drawer';
 import { DxButtonModule } from 'devextreme-angular/ui/button';
 import { Component, OnInit, ViewChild, EventEmitter, Output, enableProdMode } from '@angular/core';
 import { Item } from '../../interfaces/Item';
@@ -31,6 +32,7 @@ export class CadastraNotaComponent implements OnInit {
   itensFormDataSource: ItemForm[] = [];
 
   produtoSelecionado!: Produto;
+  limpaPdt!: Produto;
 
   produtos!: Produto[];
 
@@ -70,21 +72,30 @@ export class CadastraNotaComponent implements OnInit {
     this.produtoService.lista().subscribe(result => this.produtos = result);
   }
 
-  mostraPrecoUnit(produto: any): void {
+  mostraPrecoUnit(produto: any, rowData: any): void {
+    rowData['produto'] = produto.value;
     this.precoUnit = produto.value.preco;
-    console.log(this.precoUnit)
-    this.calculaValorItem();
+    rowData['precoUnitario'] = this.precoUnit;
+    this.calculaValorItem(rowData);
   }
 
-  calculaValorItem(): void {
+  calculaValorItem(rowData: any): void {
+
+    rowData['quantidade'] = this.qtdProduto;
+
     if (this.precoUnit != 0 && this.qtdProduto != 0) {
       this.valorTotalItem = this.precoUnit * this.qtdProduto;
+      rowData['valorTotal'] = this.valorTotalItem;
     }
-
-    console.log(this.valorTotalItem);
   }
 
-  addItem(): void {
+  addItem(event: any): void {
+
+    console.log('entrei no add item!')
+
+    if (this.validaItem(event.changes[0].data)) {
+      return;
+    }
 
     const itemFormAdd: ItemForm = {
       produto: this.produtoSelecionado,
@@ -93,16 +104,40 @@ export class CadastraNotaComponent implements OnInit {
       valorTotal: this.valorTotalItem
     }
 
-    console.log(itemFormAdd)
+    this.itensFormDataSource.push(itemFormAdd);
+
+    this.limpaCamposItem();
+
   }
 
+  validaItem(dadosRegistro: any): boolean {
 
-  isCloneIconVisible({ row }: FirstArgument<DxDataGridTypes.ColumnButton['visible']>) {
-    return row!.isEditing;
+    if (!dadosRegistro.hasOwnProperty('produto') && !dadosRegistro.produto) {
+      notify('Selecione um produto!', 'error', 4000);
+      return true;
+
+    } else if (!dadosRegistro.hasOwnProperty('precoUnitario') && dadosRegistro.precoUnitario == 0) {
+      notify('Erro no preço do produto!', 'error', 4000);
+      return true;
+
+    } else if (!dadosRegistro.hasOwnProperty('quantidade') || dadosRegistro.quantidade <= 0) {
+      notify('A quantidade deve ser maior que zero', 'error', 4000);
+      return true;
+
+    } else if (!dadosRegistro.hasOwnProperty('valorTotal') && !dadosRegistro.valorTotal) {
+      notify('Erro no valor total do item', 'error', 4000);
+      return true;
+
+    }
+
+    return false;
   }
 
-  vinculaPdtTemplateAPdtData(event: any, rowData: any): void {
-    rowData['produto'] = event.value;
+  limpaCamposItem(): void {
+    this.produtoSelecionado = this.limpaPdt;
+    this.precoUnit = 0;
+    this.qtdProduto = 0;
+    this.valorTotalItem = 0;
   }
 
 }

@@ -34,27 +34,37 @@
 
             <h2>Itens</h2>
 
-            <dx-data-grid #vamos [dataSource]="itensFormDataSource" [showBorders]="true" [columnAutoWidth]="true">
+            <dx-data-grid [dataSource]="itensFormDataSource" [showBorders]="true" [columnAutoWidth]="true"
+                (onRowValidating)="addItem($event)">
 
                 <dxo-editing mode="row" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true"
                     [useIcons]="true"></dxo-editing>
 
 
 
-                <dxi-column caption="Produto" dataField="produto.nome" editCellTemplate="produto"></dxi-column>
+                <dxi-column caption="Produto" dataField="produto.nome" editCellTemplate="produto">
+                    <dxi-validation-rule type="required" message="Selecione um produto"></dxi-validation-rule>
+                </dxi-column>
 
-                <dxi-column caption="Preço Unitário" dataField="precoUnitario" [allowEditing]="true"
-                    editCellTemplate="precoUnit" hidingPriority="1"></dxi-column>
+                <dxi-column caption="Preço Unitário" dataField="precoUnitario" editCellTemplate="precoUnit"
+                    [format]=" {type: 'currency', currency: 'BRL' }" hidingPriority="1">
+                    <dxi-validation-rule type="required" message="O preço é obrigatório"></dxi-validation-rule>
 
-                <dxi-column caption="Quantidade" dataField="quantidade" editCellTemplate="qtdProduto"></dxi-column>
+                </dxi-column>
 
-                <dxi-column caption="Valor Total" dataField="valorTotal" [allowEditing]="true"
-                    editCellTemplate="valorTot"></dxi-column>
+                <dxi-column caption="Quantidade" dataField="quantidade" editCellTemplate="qtdProduto">
+                    <dxi-validation-rule type="required" message="Digite a quantidade"></dxi-validation-rule>
+
+                </dxi-column>
+
+                <dxi-column caption="Valor Total" dataField="valorTotal" editCellTemplate="valorTot"
+                    [format]=" {type: 'currency', currency: 'BRL' }">
+                    <dxi-validation-rule type="required" message="O valor total é obrigatório"></dxi-validation-rule>
+
+                </dxi-column>
 
 
                 <dxi-column type="buttons" [width]="110" [buttons]="customButtons">
-                    <dxi-button hint="Salvar" icon="save" [visible]="isCloneIconVisible" [onClick]="addItem()"></dxi-button>
-                    <dxi-button name="save" [visible]="false" [disabled]="true"></dxi-button>
                     <dxi-button name="edit"></dxi-button>
                     <dxi-button name="delete"></dxi-button>
                 </dxi-column>
@@ -66,26 +76,27 @@
                 <div *dxTemplate="let selectPdt of 'produto'">
                     <dx-select-box [items]="produtos" [(value)]="produtoSelecionado" displayExpr="nome"
                         placeholder="Selecione um produto" [searchEnabled]="true"
-                        (onValueChanged)="mostraPrecoUnit($event)">
+                        (onValueChanged)="mostraPrecoUnit($event, selectPdt.row.data)">
                     </dx-select-box>
                 </div>
 
                 <div *dxTemplate="let preco of 'precoUnit'">
-                    <p>{{ precoUnit | currency }}</p>
+                    <dx-number-box [(value)]="precoUnit" [readOnly]="true" format="R$ #,##0.##" currency="BRL">
+                    </dx-number-box>
+
                 </div>
 
                 <div *dxTemplate="let qtd of 'qtdProduto'">
                     <dx-number-box [(value)]="qtdProduto" format="#" [min]="1"
-                        [inputAttr]="{ 'aria-label': 'Integer Format'}" (onChange)="calculaValorItem()"
-                        (onValueChanged)="vinculaPdtTemplateAPdtData($event, qtd.row.data)">
-
+                        [inputAttr]="{ 'aria-label': 'Integer Format'}" (onChange)="calculaValorItem(qtd.row.data)">
                     </dx-number-box>
                 </div>
 
 
-
                 <div *dxTemplate="let valorT of 'valorTot'">
-                    <p>{{valorTotalItem | currency}}</p>
+                    <dx-number-box [(value)]="valorTotalItem" format="R$ #,##0.##" [readOnly]="true"
+                        [inputAttr]="{ 'aria-label': 'Currency Format' }">
+                    </dx-number-box>
                 </div>
 
             </dx-data-grid>
