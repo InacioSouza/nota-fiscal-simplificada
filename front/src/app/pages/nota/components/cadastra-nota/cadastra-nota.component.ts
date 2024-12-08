@@ -1,18 +1,13 @@
-import { DxDrawerModule } from 'devextreme-angular/ui/drawer';
-import { DxButtonModule } from 'devextreme-angular/ui/button';
+import { NotaService } from './../../services/nota.service';
 import { Component, OnInit, ViewChild, EventEmitter, Output, enableProdMode } from '@angular/core';
-import { Item } from '../../interfaces/Item';
 import { ItemForm } from '../../interfaces/ItemForm';
 
-import { NotaService } from '../../services/nota.service';
-import { NotaForm } from '../../interfaces/NotaForm';
-import { DxSelectBoxComponent } from 'devextreme-angular';
 import { Produto } from 'src/app/pages/produto/interfaces/Produto';
 import { ProdutoService } from 'src/app/pages/produto/services/produto.service';
 import { Cliente } from 'src/app/pages/cliente/interfaces/Cliente';
 import { ClienteService } from 'src/app/pages/cliente/services/cliente.service';
 import notify from 'devextreme/ui/notify';
-import { DxDataGridModule, DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
+import { NotaForm } from '../../interfaces/NotaForm';
 
 type FirstArgument<T> = T extends (...args: any) => any ? Parameters<T>[0] : never;
 
@@ -42,34 +37,13 @@ export class CadastraNotaComponent implements OnInit {
 
   valorTotalNota: number = 0;
 
+  @Output() idNotaCadastrada = new EventEmitter();
 
-  customButtons = [
-    {
-      name: 'save',
-      text: 'save',
-      icon: 'save',
-      onClick: (e: any) => console.log('Save')
-    }
-    /*
-    {
-      name: 'edit',
-      text: 'Edit',
-      icon: 'edit',
-      onClick: (e: any) => console.log('Sobrescrevi o comportamento do edit!'),
-    },
-    {
-      name: 'delete',
-      text: 'Delete',
-      icon: 'trash',
-      onClick: (e: any) => console.log('Sobrescrevi o comportamento do delete!'),
-    },
-     */
-  ]
-
-  constructor(private produtoService: ProdutoService) { }
+  constructor(private produtoService: ProdutoService, private clienteService: ClienteService, private notaservice: NotaService) { }
 
   ngOnInit(): void {
     this.produtoService.lista().subscribe(result => this.produtos = result);
+    this.clienteService.lista().subscribe(result => this.clientes = result);
   }
 
   mostraPrecoUnit(produto: any, rowData: any): void {
@@ -91,23 +65,22 @@ export class CadastraNotaComponent implements OnInit {
 
   addItem(event: any): void {
 
-    console.log('entrei no add item!')
-
     if (this.validaItem(event.changes[0].data)) {
       return;
     }
 
-    const itemFormAdd: ItemForm = {
-      produto: this.produtoSelecionado,
-      precoUnitario: this.precoUnit,
-      quantidade: this.qtdProduto,
-      valorTotal: this.valorTotalItem
+    const produtoItem = event.changes[0].data.produto;
+
+    for (let i = 0; i < this.itensFormDataSource.length; i++) {
+      if (this.itensFormDataSource[i].produto === produtoItem) {
+        this.valorTotalNota -= this.itensFormDataSource[i].valorTotal;
+        this.itensFormDataSource.splice(i, 1);
+        this.valorTotalNota += event.changes[0].data.valorTotal;
+        return;
+      }
     }
 
-    this.itensFormDataSource.push(itemFormAdd);
-
-    this.limpaCamposItem();
-
+    this.valorTotalNota += event.changes[0].data.valorTotal;
   }
 
   validaItem(dadosRegistro: any): boolean {
@@ -127,7 +100,6 @@ export class CadastraNotaComponent implements OnInit {
     } else if (!dadosRegistro.hasOwnProperty('valorTotal') && !dadosRegistro.valorTotal) {
       notify('Erro no valor total do item', 'error', 4000);
       return true;
-
     }
 
     return false;
@@ -140,6 +112,44 @@ export class CadastraNotaComponent implements OnInit {
     this.valorTotalItem = 0;
   }
 
+  deletaItem(event: any): void {
+    this.valorTotalNota -= event.data.valorTotal;
+  }
+
+  emiteNota(): void {
+
+    if (this.itensFormDataSource.length == 0) {
+      notify('Deve haver ao menos 1 item na nota!', 'error', 3000);
+      return;
+    }
+
+    if (!this.clienteSelecionado) {
+      notify('Selecione 1 cliente!', 'error', 3000);
+    }
+
+    const nota: NotaForm = {
+      data_emissao: this.dataHoje,
+      cliente: this.clienteSelecionado,
+      itens: this.itensFormDataSource,
+      valorTotal: this.valorTotalNota
+    }
+
+
+    this.notaservice.cadastraNota(nota).subscribe(
+      {
+        next: (nota) => {
+          notify('Nota cadstrada!', 'success', 4000);
+
+          this.idNotaCadastrada.emit(nota.id);
+        },
+        error: (err) => {
+          notify('Falha ao cadastrar nota!', 'error', 4000);
+        }
+      }
+    );
+
+  }
+
+
+
 }
-
-

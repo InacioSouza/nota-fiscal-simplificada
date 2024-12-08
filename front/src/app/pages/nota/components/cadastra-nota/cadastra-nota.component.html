@@ -35,7 +35,7 @@
             <h2>Itens</h2>
 
             <dx-data-grid [dataSource]="itensFormDataSource" [showBorders]="true" [columnAutoWidth]="true"
-                (onRowValidating)="addItem($event)">
+                (onSaving)="addItem($event)" (onSaved)="limpaCamposItem()" (onRowRemoving)="deletaItem($event)">
 
                 <dxo-editing mode="row" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true"
                     [useIcons]="true"></dxo-editing>
@@ -64,7 +64,7 @@
                 </dxi-column>
 
 
-                <dxi-column type="buttons" [width]="110" [buttons]="customButtons">
+                <dxi-column type="buttons" [width]="110" >
                     <dxi-button name="edit"></dxi-button>
                     <dxi-button name="delete"></dxi-button>
                 </dxi-column>
@@ -110,7 +110,7 @@
             [(value)]="valorTotalNota" [readOnly]="true">
         </dx-number-box>
 
-        <dx-button class="btn__add__item" [width]="200" text="Emitir nota" (onClick)="0" stylingMode="outlined"
-            type="success"></dx-button>
+        <dx-button class="btn__add__item" [width]="200" text="Emitir nota" (onClick)="emiteNota()"
+            stylingMode="outlined" type="success"></dx-button>
     </div>
 </div>
