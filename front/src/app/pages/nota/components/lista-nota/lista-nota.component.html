@@ -1,6 +1,6 @@
 <div class="lista__notas">
     <div class="grid__notas">
-        <dx-data-grid [dataSource]="notas" keyExpr="id" [showBorders]="true" [columnAutoWidth]="true"
+        <dx-data-grid #listaNota [dataSource]="notas" keyExpr="id" [showBorders]="true" [columnAutoWidth]="true"
             [focusedRowEnabled]="true" [focusedRowIndex]="0" [focusedRowKey]="focoRowId"
             (onToolbarPreparing)="modificaToolbar($event)">
 
@@ -10,31 +10,84 @@
             <dxo-paging [pageSize]="10"></dxo-paging>
             <dxo-pager [visible]="true" [showPageSizeSelector]="true" [allowedPageSizes]="[10, 20, 30]"></dxo-pager>
 
+            <dxo-editing width="200" mode="row" [allowUpdating]="true" [allowDeleting]="true"></dxo-editing>
+
             <dxo-master-detail [enabled]="true" template="detail"></dxo-master-detail>
+
+            <dxi-column alignment="left" width="220" dataField="id" caption="Id" [allowEditing]="false"></dxi-column>
+            <dxi-column alignment="left" width="220" dataField="numero" caption="número"
+                [allowEditing]="false"></dxi-column>
+
+            <dxi-column alignment="left" width="220" dataField="data_emissao" caption="Data de Emissão" dataType="date">
+            </dxi-column>
+
+            <dxi-column alignment="left" width="220" dataField="cliente.nome" caption="Cliente">
+                <dxo-lookup [dataSource]="clientes" displayExpr="nome" valueExpr="nome">
+                </dxo-lookup>
+            </dxi-column>
+
+            <dxi-column alignment="left" width="220" dataField="valorTotal" caption="Valor Total" [allowEditing]="false"
+                editCellTemplate="valorNota"></dxi-column>
+
+            <div *dxTemplate="let valorNota of 'valorNota'">
+                <dx-number-box [value]="valorNota.value" [readOnly]="true" format="R$ #,##0.##"
+                    currency="BRL"></dx-number-box>
+            </div>
 
             <div *dxTemplate="let nota of 'detail'">
                 <h2>Itens</h2>
 
                 <dx-data-grid [dataSource]="nota.data.itens" [showBorders]="true" [columnAutoWidth]="true"
-                    [focusedRowEnabled]="true" [focusedRowIndex]="0">
-                    <dxi-column alignment="left" width="220" dataField="id" caption="Id"> </dxi-column>
-                    <dxi-column alignment="left" width="220" dataField="produto.nome" caption="Produto"></dxi-column>
-                    <dxi-column alignment="left" width="220" dataField="produto.preco"
-                        [format]=" {type: 'currency', currency: 'BRL' }" caption="Preço unitário"></dxi-column>
-                    <dxi-column alignment="left" width="220" dataField="quantidade" caption="Quantidade"></dxi-column>
+                    [focusedRowEnabled]="true" [focusedRowIndex]="0" (onSaving)="recalculaValorNota(nota)"
+                    (onEditCanceled)="test(nota)" (onRowRemoving)="deletaItem($event, nota)">
+
+                    <dxo-editing width="200" mode="row" [allowUpdating]="true" [allowDeleting]="true"></dxo-editing>
+
+                    <dxi-column alignment="left" width="220" dataField="id" caption="Id" [allowEditing]="false">
+                    </dxi-column>
+
+                    <dxi-column alignment="left" width="220" dataField="produto.nome" caption="Produto"
+                        editCellTemplate="produtoItem">
+                    </dxi-column>
+
+                    <dxi-column alignment="left" width="220" dataField="produto.preco" [allowEditing]="false"
+                        [format]=" {type: 'currency', currency: 'BRL' }" caption="Preço unitário">
+                        <dxi-validation-rule type="required" message="O preço é obrigatório"></dxi-validation-rule>
+                    </dxi-column>
+
+                    <dxi-column alignment="left" width="220" dataField="quantidade" caption="Quantidade"
+                        editCellTemplate="qtdProduto">
+                        <dxi-validation-rule type="required"
+                            message="Digite a quantidade do produto"></dxi-validation-rule>
+                    </dxi-column>
+
+                    <dxi-column alignment="left" width="220" dataField="valorTotal" caption="Valor Total"
+                        [allowEditing]="false" [format]=" {type: 'currency', currency: 'BRL' }" [allowEditing]="true"
+                        editCellTemplate="valorTotItem">
+                        <dxi-validation-rule type="required"
+                            message="O valor total é obrigatório"></dxi-validation-rule>
+                    </dxi-column>
+
+                    <div *dxTemplate="let selectPdt of 'produtoItem'">
+                        <dx-select-box [items]="produtos" displayExpr="nome" placeholder="Selecione um produto"
+                            [(value)]="produtoSelecionado" [searchEnabled]="true"
+                            (onValueChanged)="vinculaPdtData(selectPdt.row.data, $event, selectPdt)"></dx-select-box>
+                    </div>
+
+                    <div *dxTemplate="let qtd of 'qtdProduto'">
+                        <dx-number-box [(value)]="qtd.value" format="#" [min]="1"
+                            (onValueChanged)="vinculaQtdData(qtd.row.data, $event, qtd)"></dx-number-box>
+                    </div>
+
+                    <div *dxTemplate="let valorTot of 'valorTotItem'">
+                        <dx-number-box [value]="valorTot.value" [readOnly]="true" format="R$ #,##0.##"
+                            currency="BRL"></dx-number-box>
+                    </div>
+
                 </dx-data-grid>
 
             </div>
 
-            <dxi-column alignment="left" width="220" dataField="id" caption="Id"></dxi-column>
-            <dxi-column alignment="left" width="220" dataField="numero" caption="número"></dxi-column>
-
-            <dxi-column alignment="left" width="220" dataField="data_emissao" caption="Data de Emissão" dataType="date">
-
-            </dxi-column>
-            <dxi-column alignment="left" width="220" dataField="cliente.nome" caption="Cliente"></dxi-column>
-            <dxi-column alignment="left" width="220" dataField="valorTotal" caption="Valor Total"
-                [format]=" {type: 'currency', currency: 'BRL' }"></dxi-column>
         </dx-data-grid>
 
         <dx-popup [visible]="exibePopupNota" title="Cadastro de Nota" width="80%" height="700" [dragEnabled]="false"
