@@ -144,28 +144,21 @@ export class ListaNotaComponent implements OnInit {
 
   }
 
-  deletaItem(event: any, nota: any) {
+  removeItem(nota: any, dataItens: DxDataGridComponent): void {
 
-    event.cancel = true;
+    const itemFoco = dataItens.instance.option('focusedRowKey');
 
-    console.log('O Item/evento:', event);
+    const newItens = nota.data.itens.filter((item: any) => item.id !== itemFoco.id);
 
-    console.log('Valor total item: ', event.data.valorTotal);
+    nota.data.itens = newItens;
 
-    console.log('A nota:  ', nota)
+    const novoValor = nota.data.valorTotal - itemFoco.valorTotal
 
-    console.log('Valor total nota: ', nota.data.valorTotal);
-
-
-
-    /*
-    const novoValorNota = nota.data.valorTotal - event.data.valorTotal
-
-    nota.data.valorTotal = novoValorNota;  */
+    nota.data.valorTotal = novoValor;
   }
 
-  test(nota: any): void {
-    console.log('TESTE: ', nota);
+  vamos(nota: any, dataItens: DxDataGridComponent): () => void {
+    return () => this.removeItem(nota, dataItens);
   }
 
 }
