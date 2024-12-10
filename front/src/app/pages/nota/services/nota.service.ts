@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 import { Item } from '../interfaces/Item';
 import { Observable } from 'rxjs';
 import { NotaForm } from '../interfaces/NotaForm';
-import { Nota } from '../interfaces/Nota';
+import { INota } from '../interfaces/INota';
+import {Nota} from "../../../shared/model/nota";
 
 @Injectable({
   providedIn: 'root'

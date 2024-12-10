@@ -122,7 +122,8 @@ public class NotaController {
 
 	@GetMapping
 	List<Nota> listaNotas() {
-		return (List<Nota>) notaRepo.findAll();
+
+    return (List<Nota>) notaRepo.findAll();
 	}
 
 	@GetMapping("/{id}")

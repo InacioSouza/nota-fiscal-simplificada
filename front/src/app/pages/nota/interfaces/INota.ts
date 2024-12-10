@@ -1,7 +1,7 @@
 import { Cliente } from "src/app/pages/cliente/interfaces/Cliente";
 import { Item } from "./Item";
 
-export interface Nota{
+export interface INota {
     id: number,
     numero: string,
     data_emissao: Date,

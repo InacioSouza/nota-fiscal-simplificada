@@ -138,7 +138,7 @@ export class CadastraNotaComponent implements OnInit {
     this.notaservice.cadastraNota(nota).subscribe(
       {
         next: (nota) => {
-          notify('Nota cadstrada!', 'success', 4000);
+          notify('INota cadstrada!', 'success', 4000);
 
           this.idNotaCadastrada.emit(nota.id);
         },

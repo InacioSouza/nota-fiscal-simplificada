@@ -28,7 +28,7 @@ public class Nota {
 	private Cliente cliente;
 
 	@OneToMany(mappedBy = "nota")
-	private List<Item> itens = new ArrayList<Item>();
+	private List<Item> itens;
 
 	private BigDecimal valorTotal = new BigDecimal(0);
 
@@ -38,7 +38,6 @@ public class Nota {
 	public Nota(Cliente cliente, List<Item> itens, int numero) {
 		this.cliente = cliente;
 		this.itens = itens;
-
 		this.numero = numero;
 		calcValorTotalNota();
 	}

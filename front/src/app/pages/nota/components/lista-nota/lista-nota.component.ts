@@ -1,12 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NotaService } from '../../services/nota.service';
-import { Nota } from '../../interfaces/Nota';
+import { INota } from '../../interfaces/INota';
 import { AppInfoService } from 'src/app/shared/services';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { Cliente } from 'src/app/pages/cliente/interfaces/Cliente';
 import { ClienteService } from 'src/app/pages/cliente/services/cliente.service';
 import { ProdutoService } from 'src/app/pages/produto/services/produto.service';
 import { Produto } from 'src/app/pages/produto/interfaces/Produto';
+import {Nota} from "../../../../shared/model/nota";
 
 @Component({
   selector: 'app-lista-nota',
@@ -15,7 +16,7 @@ import { Produto } from 'src/app/pages/produto/interfaces/Produto';
 })
 export class ListaNotaComponent implements OnInit {
 
-  notas!: Nota[];
+  notas: Nota[] = [];
 
   clientes!: Cliente[];
   clienteSelecionado!: Cliente;
@@ -43,17 +44,11 @@ export class ListaNotaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.appInfo.title = "Notas";
-    this.carregaDataGrid();
-
-    this.clienteService.lista().subscribe(result => this.clientes = result);
-    this.produtoService.lista().subscribe(result => this.produtos = result);
-  }
-
-  carregaDataGrid(): void {
-    this.notaService.lista().subscribe(
-      result => this.notas = result
-    );
+    setTimeout(() => {
+      this.clienteService.lista().subscribe(result => this.clientes = result);
+      this.produtoService.lista().subscribe(result => this.produtos = result);
+      this.notaService.lista().subscribe(result => this.notas = result);
+    }, 0);
   }
 
   modificaToolbar(event: any): void {
@@ -83,7 +78,6 @@ export class ListaNotaComponent implements OnInit {
 
   fechaPopup(): void {
     this.exibePopupNota = false;
-    this.carregaDataGrid();
   }
 
   recalculaValorNota(nota: any) {
@@ -161,4 +155,10 @@ export class ListaNotaComponent implements OnInit {
     return () => this.removeItem(nota, dataItens);
   }
 
+  onInitNewRowNotas(event: any) {
+    console.log(event)
+    event.data = new Nota();
+    event.data.itens = [];
+    console.log(event)
+  }
 }
