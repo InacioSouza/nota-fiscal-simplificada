@@ -10,6 +10,7 @@ import { Nota } from '../model/nota';
 })
 export class NotaService {
 
+
   private urlItem: string = 'http://localhost:8080/snf/item'
   private urlNota: string = 'http://localhost:8080/snf/nota'
   constructor(private http: HttpClient) { }
@@ -20,6 +21,10 @@ export class NotaService {
 
   cadastraNota(nota: NotaForm): Observable<any> {
     return this.http.post<any>(this.urlNota, nota);
+  }
+
+  removeNota(id: number): Observable<void> {
+    return this.http.delete<void>(this.urlNota + `/${id}`);
   }
 
   lista(): Observable<Nota[]> {

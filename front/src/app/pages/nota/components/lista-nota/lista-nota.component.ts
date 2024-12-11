@@ -75,7 +75,7 @@ export class ListaNotaComponent implements OnInit {
   }
 
   removeNota(event: any): void {
-    console.log('Remove nota: ', event)
+    this.notaService.removeNota(event.data.id).subscribe();
   }
 
   recalculaValorTotItem(rowData: any, origem: string): void {
