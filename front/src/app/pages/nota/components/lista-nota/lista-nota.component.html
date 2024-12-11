@@ -9,6 +9,7 @@
                       (onInitNewRow)="onInitNewRowNotas($event)"
                       (onSaving)="cadastraNota($event)"
                       (onRowRemoving)="removeNota($event)"
+                      (onRowUpdated)="test($event)"
                       >
 
             <dxo-filter-row [visible]="true"></dxo-filter-row>
@@ -123,15 +124,7 @@
 
           </div>
 
-
-
         </dx-data-grid>
-
-<!--
-        <dx-popup [visible]="exibePopupNota" title="Cadastro de INota" width="80%" height="700" [dragEnabled]="false"
-            [closeOnOutsideClick]="true" [showCloseButton]="true" (onHiding)="fechaPopup()">
-            <app-cadastra-nota (idNotaCadastrada)="focoNotaCadastrada($event)"></app-cadastra-nota>
-        </dx-popup>
--->
+        
     </div>
 </div>

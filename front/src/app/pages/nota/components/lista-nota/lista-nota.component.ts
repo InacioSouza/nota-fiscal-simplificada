@@ -44,7 +44,11 @@ export class ListaNotaComponent implements OnInit {
   }
 
   cadastraNota(event: any): void {
-    if (event.changes[0].data.itens.length == 0) {
+    if(event.changes?.length === 0 ){
+      return;
+    }
+    
+    if (event.changes[0]?.data?.itens?.length == 0) {
       notify('Deve haver ao menos 1 item na nota', 'error', 4000);
       event.cancel = true;
       return;
@@ -52,16 +56,16 @@ export class ListaNotaComponent implements OnInit {
 
     const itens: ItemForm[] = [];
 
-    event.changes[0].data.itens.forEach((item: any) => {
+    event.changes[0]?.data.itens.forEach((item: any) => {
       let itemForm: ItemForm = { produto: item.produto, quantidade: item.qtdProduto, valorTotal: item.valorTotal };
       itens.push(itemForm);
     });
 
     const nota: NotaForm = {
-      data_emissao: event.changes[0].data.data_emissao,
-      cliente: event.changes[0].data.cliente,
+      data_emissao: event.changes[0]?.data.data_emissao,
+      cliente: event.changes[0]?.data.cliente,
       itens: itens,
-      valorTotal: event.changes[0].data.valorTotal
+      valorTotal: event.changes[0]?.data.valorTotal
     }
 
     this.notaService.cadastraNota(nota).subscribe({
@@ -89,7 +93,6 @@ export class ListaNotaComponent implements OnInit {
 
     if (this.qtdProduto && this.qtdProduto != 0 && this.produtoSelecionado) {
       this.valorTotalItem = this.produtoSelecionado.preco * this.qtdProduto;
-      console.log('VALOR ITEM RECALCULADO: ', this.valorTotalItem)
       rowData['valorTotal'] = this.valorTotalItem;
     }
   }
@@ -128,9 +131,15 @@ export class ListaNotaComponent implements OnInit {
 
     console.log('Event ', event);
     console.log('Data', nota);
+
+    nota.data.valorTotal = 0;
   }
 
   atualizaNota(event: any): void {
     console.log(event)
+  }
+
+  test(event: any): void {
+    console.log('Entrei no test!');
   }
 }
