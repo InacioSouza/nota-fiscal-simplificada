@@ -1,7 +1,6 @@
 <div class="lista-cliente">
-    <dx-data-grid [dataSource]="clientes" keyExpr="id" [showBorders]="true"
-        [columnAutoWidth]="true" [focusedRowEnabled]="true" [focusedRowIndex]="rowFoco"
-        [focusedRowKey]="rowFocoKey"
+    <dx-data-grid [dataSource]="clientes" keyExpr="id" [showBorders]="true" [columnAutoWidth]="true"
+        [focusedRowEnabled]="true" [focusedRowIndex]="rowFoco" [focusedRowKey]="rowFocoKey"
         (onRowUpdating)="editaCliente($event)" (onRowRemoving)="deletaCliente($event)"
         (onToolbarPreparing)="modificaToolbar($event)">
 
@@ -10,12 +9,9 @@
         <dxo-paging [pageSize]="10"></dxo-paging>
         <dxo-pager [visible]="true" [showPageSizeSelector]="true" [allowedPageSizes]="[10, 20, 30]"></dxo-pager>
 
-        <dxo-editing [texts]="textosAcoes" mode="row" [allowUpdating]="true" [allowDeleting]="true"
-            >
-        </dxo-editing>
+        <dxo-editing mode="row" [allowUpdating]="true" [allowDeleting]="true"></dxo-editing>
 
         <dxi-column width="300" alignment="left" caption="Id" dataField="id" [allowEditing]="false"></dxi-column>
-
         <dxi-column width="300" caption="Nome" dataField="nome"></dxi-column>
 
     </dx-data-grid>

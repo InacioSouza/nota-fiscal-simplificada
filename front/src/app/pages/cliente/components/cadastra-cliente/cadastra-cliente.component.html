@@ -4,7 +4,6 @@
     <dx-form [(formData)]="cliente">
 
         <dxi-item dataField="nome" [editorOptions]="{placeholder: 'Digite o nome do cliente'}">
-
             <dxi-validation-rule type="pattern" pattern="^[a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇÑ ]+$" message="Números e acentos/caracteres especiais não são permitidos"></dxi-validation-rule>
 
             <dxi-validation-rule type="required" message="O nome não pode ser vazio"></dxi-validation-rule>

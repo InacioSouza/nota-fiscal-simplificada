@@ -1,8 +1,8 @@
 import { Component, Output, EventEmitter, ViewChild } from '@angular/core';
-import { ProdutoService } from '../../services/produto.service';
 import { Produto } from '../../interfaces/Produto';
 import { DxFormComponent } from 'devextreme-angular';
 import notify from 'devextreme/ui/notify';
+import { ProdutoService } from 'src/app/shared/services/produto.service';
 
 
 @Component({
@@ -49,7 +49,7 @@ export class CadastraProdutoComponent {
       this.produtoService.cadastra(this.produto).subscribe({
         next: (produto) => {
           notify('Produto cadastrado!', 'success', 3000);
-          
+
           this.form.instance.getEditor('nome')?.reset();
           this.form.instance.getEditor('preco')?.reset();
 

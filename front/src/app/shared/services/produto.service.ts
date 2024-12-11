@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Produto } from '../interfaces/Produto';
 import { Observable } from 'rxjs';
+import { Produto } from 'src/app/pages/produto/interfaces/Produto';
 
 @Injectable({
   providedIn: 'root'
@@ -12,15 +12,15 @@ export class ProdutoService {
 
   constructor(private http: HttpClient) { }
 
-  cadastra( produto: Produto ): Observable<any>{
-    return this.http.post<Produto>(`${this.url}` ,produto);
+  cadastra(produto: Produto): Observable<any> {
+    return this.http.post<Produto>(`${this.url}`, produto);
   }
 
-  lista(): Observable<Produto[]>{
+  lista(): Observable<Produto[]> {
     return this.http.get<Produto[]>(this.url);
   }
 
-  deleta(id: number): Observable<any>{
+  deleta(id: number): Observable<any> {
     return this.http.delete<any>(`${this.url}/${id}`);
   }
 

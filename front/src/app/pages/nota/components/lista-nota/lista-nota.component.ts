@@ -1,13 +1,14 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { NotaService } from '../../services/nota.service';
-import { INota } from '../../interfaces/INota';
+import { ItemForm } from './../../interfaces/ItemForm';
+import { NotaForm } from './../../interfaces/NotaForm';
+import { Component, OnInit } from '@angular/core';
 import { AppInfoService } from 'src/app/shared/services';
-import { DxDataGridComponent } from 'devextreme-angular';
 import { Cliente } from 'src/app/pages/cliente/interfaces/Cliente';
-import { ClienteService } from 'src/app/pages/cliente/services/cliente.service';
-import { ProdutoService } from 'src/app/pages/produto/services/produto.service';
 import { Produto } from 'src/app/pages/produto/interfaces/Produto';
-import {Nota} from "../../../../shared/model/nota";
+import { Nota } from "../../../../shared/model/nota";
+import notify from 'devextreme/ui/notify';
+import { ClienteService } from 'src/app/shared/services/cliente.service';
+import { ProdutoService } from 'src/app/shared/services/produto.service';
+import { NotaService } from 'src/app/shared/services/nota.service';
 
 @Component({
   selector: 'app-lista-nota',
@@ -27,21 +28,12 @@ export class ListaNotaComponent implements OnInit {
 
   qtdProduto!: number;
   valorTotalItem!: number;
-  valorTotalAntItem!: number;
 
-  get existemDados(): boolean {
-    return this.notas && this.notas.length > 0;
-  }
-
-  exibePopupNota: boolean = false;
-
-  toolbarModificada: boolean = false;
-
-  focoRowId!: number;
-
-  constructor(private notaService: NotaService, private appInfo: AppInfoService, private clienteService: ClienteService, private produtoService: ProdutoService) {
-
-  }
+  constructor(
+    private notaService: NotaService,
+    private appInfo: AppInfoService,
+    private clienteService: ClienteService,
+    private produtoService: ProdutoService) { }
 
   ngOnInit(): void {
     setTimeout(() => {
@@ -51,50 +43,42 @@ export class ListaNotaComponent implements OnInit {
     }, 0);
   }
 
-  modificaToolbar(event: any): void {
-    if (this.toolbarModificada) return;
+  cadastraNota(event: any): void {
+    if (event.changes[0].data.itens.length == 0) {
+      notify('Deve haver ao menos 1 item na nota', 'error', 4000);
+      event.cancel = true;
+      return;
+    }
 
-    const itensToolbar = event.toolbarOptions.items;
+    const itens: ItemForm[] = [];
 
-    itensToolbar.push({
-      widget: 'dxButton',
-      options: {
-        icon: 'add',
-        hint: 'Adicionar nova linha',
-        onClick: () => {
-          this.exibePopupNota = true;
-        },
-      },
-      location: 'after',
+    event.changes[0].data.itens.forEach((item: any) => {
+      let itemForm: ItemForm = { produto: item.produto, quantidade: item.qtdProduto, valorTotal: item.valorTotal };
+      itens.push(itemForm);
     });
 
-    this.toolbarModificada = true;
+    const nota: NotaForm = {
+      data_emissao: event.changes[0].data.data_emissao,
+      cliente: event.changes[0].data.cliente,
+      itens: itens,
+      valorTotal: event.changes[0].data.valorTotal
+    }
+
+    this.notaService.cadastraNota(nota).subscribe({
+      next: (nota) => {
+        notify('Nota cadastrada!', 'success', 4000);
+      },
+      error: (err) => {
+        notify('Falha ao cadastrar nota!', 'error', 4000);
+      }
+    });
   }
 
-  focoNotaCadastrada(id: any) {
-    this.fechaPopup();
-    this.focoRowId = id;
-  }
-
-  fechaPopup(): void {
-    this.exibePopupNota = false;
-  }
-
-  recalculaValorNota(nota: any) {
-
-    const idLinhaFoco = nota.data.id;
-
-    const notaEmFoco = this.notas.find((item) => item.id === idLinhaFoco);
-
-    const valorTot = notaEmFoco!.valorTotal;
-
-    notaEmFoco!.valorTotal = (valorTot - this.valorTotalAntItem) + this.valorTotalItem;
-
-    this.limpaCamposItem();
+  removeNota(event: any): void {
+    console.log('Remove nota: ', event)
   }
 
   recalculaValorTotItem(rowData: any, origem: string): void {
-
     if (origem === 'pdt') {
       this.qtdProduto = rowData['quantidade'];
     }
@@ -102,8 +86,6 @@ export class ListaNotaComponent implements OnInit {
     if (origem === 'qtd') {
       this.produtoSelecionado = rowData['produto'];
     }
-
-    this.valorTotalAntItem = rowData['valorTotal'];
 
     if (this.qtdProduto && this.qtdProduto != 0 && this.produtoSelecionado) {
       this.valorTotalItem = this.produtoSelecionado.preco * this.qtdProduto;
@@ -121,7 +103,6 @@ export class ListaNotaComponent implements OnInit {
   }
 
   vinculaPdtData(rowData: any, event: any, selectPdt: any): void {
-
     if (event.value) {
       rowData['produto'] = event.value;
       this.produtoSelecionado = event.value;
@@ -131,34 +112,25 @@ export class ListaNotaComponent implements OnInit {
   }
 
   limpaCamposItem(): void {
-
     this.produtoSelecionado = this.limpaPdt;
     this.qtdProduto = 0;
     this.valorTotalItem = 0;
-
-  }
-
-  removeItem(nota: any, dataItens: DxDataGridComponent): void {
-
-    const itemFoco = dataItens.instance.option('focusedRowKey');
-
-    const newItens = nota.data.itens.filter((item: any) => item.id !== itemFoco.id);
-
-    nota.data.itens = newItens;
-
-    const novoValor = nota.data.valorTotal - itemFoco.valorTotal
-
-    nota.data.valorTotal = novoValor;
-  }
-
-  vamos(nota: any, dataItens: DxDataGridComponent): () => void {
-    return () => this.removeItem(nota, dataItens);
   }
 
   onInitNewRowNotas(event: any) {
-    console.log(event)
     event.data = new Nota();
     event.data.itens = [];
+  }
+
+  salvar(event: any, nota: any) {
+    //Com os dados lançados pelo onSaved não tenho acesso ao valor do item anterior,
+    // dessa forma não consigo calcular em tempo real o valor da nota
+
+    console.log('Event ', event);
+    console.log('Data', nota);
+  }
+
+  atualizaNota(event: any): void {
     console.log(event)
   }
 }

@@ -15,6 +15,9 @@ import { SelectBoxComponent } from './pages/select-box/select-box.component';
 import { ProdutoModule } from './pages/produto/produto.module';
 import { ClienteModule } from './pages/cliente/cliente.module';
 import { NotaModule } from './pages/nota/nota.module';
+import { ClienteService } from './shared/services/cliente.service';
+import { ProdutoService } from './shared/services/produto.service';
+import { NotaService } from './shared/services/nota.service';
 
 
 @NgModule({
@@ -44,7 +47,10 @@ import { NotaModule } from './pages/nota/nota.module';
   providers: [
     AuthService,
     ScreenService,
-    AppInfoService
+    AppInfoService,
+    ClienteService,
+    ProdutoService,
+    NotaService
   ],
   bootstrap: [AppComponent]
 })

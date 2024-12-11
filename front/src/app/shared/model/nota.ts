@@ -1,7 +1,7 @@
-import {Cliente} from "../../pages/cliente/interfaces/Cliente";
-import {Item} from "../../pages/nota/interfaces/Item";
+import { Cliente } from "../../pages/cliente/interfaces/Cliente";
+import { Item } from "../../pages/nota/interfaces/Item";
 
-export class Nota{
+export class Nota {
   id!: number;
   numero!: string;
   data_emissao!: Date;

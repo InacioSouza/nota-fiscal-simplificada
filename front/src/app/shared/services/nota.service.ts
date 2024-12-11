@@ -1,10 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Item } from '../interfaces/Item';
 import { Observable } from 'rxjs';
-import { NotaForm } from '../interfaces/NotaForm';
-import { INota } from '../interfaces/INota';
-import {Nota} from "../../../shared/model/nota";
+import { Item } from 'src/app/pages/nota/interfaces/Item';
+import { NotaForm } from 'src/app/pages/nota/interfaces/NotaForm';
+import { Nota } from '../model/nota';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +22,7 @@ export class NotaService {
     return this.http.post<any>(this.urlNota, nota);
   }
 
-  lista(): Observable<Nota[]>{
+  lista(): Observable<Nota[]> {
     return this.http.get<Nota[]>(this.urlNota);
   }
 }

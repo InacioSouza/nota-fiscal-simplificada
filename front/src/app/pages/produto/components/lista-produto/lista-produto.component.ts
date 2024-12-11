@@ -1,8 +1,8 @@
 import { AppInfoService } from './../../../../shared/services/app-info.service';
 import { Component, OnInit } from '@angular/core';
 import { Produto } from '../../interfaces/Produto';
-import { ProdutoService } from '../../services/produto.service';
 import { Router } from '@angular/router';
+import { ProdutoService } from 'src/app/shared/services/produto.service';
 
 @Component({
   selector: 'app-lista-produto',

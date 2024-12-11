@@ -1,9 +1,9 @@
 import { Component, Input } from '@angular/core';
-import { ClienteService } from '../../services/cliente.service';
 import { OnInit } from '@angular/core';
 import { Cliente } from '../../interfaces/Cliente';
 import { Router } from '@angular/router';
 import { AppInfoService } from 'src/app/shared/services';
+import { ClienteService } from 'src/app/shared/services/cliente.service';
 
 
 @Component({
@@ -20,14 +20,6 @@ export class ListaClienteComponent implements OnInit {
   rowFocoKey!: number;
 
   popupCadastroCliente: boolean = false;
-
-  textosAcoes = {
-    confirmDeleteMessage: 'Deseja excluir permanentemente este cliente?',
-  }
-
-  get existemDados(): boolean {
-    return this.clientes && this.clientes.length > 0;
-  }
 
   toolbarModificada: boolean = false;
 
