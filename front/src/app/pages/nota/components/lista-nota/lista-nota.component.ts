@@ -44,10 +44,11 @@ export class ListaNotaComponent implements OnInit {
   }
 
   cadastraNota(event: any): void {
-    if(event.changes?.length === 0 ){
+    console.log(event)
+    if (event.changes?.length === 0) {
       return;
     }
-    
+
     if (event.changes[0]?.data?.itens?.length == 0) {
       notify('Deve haver ao menos 1 item na nota', 'error', 4000);
       event.cancel = true;
@@ -105,7 +106,8 @@ export class ListaNotaComponent implements OnInit {
     this.recalculaValorTotItem(rowData, 'qtd');
   }
 
-  vinculaPdtData(rowData: any, event: any, selectPdt: any): void {
+  vinculaPdtData(rowData: any, event: any, s: any): void {
+
     if (event.value) {
       rowData['produto'] = event.value;
       this.produtoSelecionado = event.value;
@@ -125,21 +127,8 @@ export class ListaNotaComponent implements OnInit {
     event.data.itens = [];
   }
 
-  salvar(event: any, nota: any) {
-    //Com os dados lançados pelo onSaved não tenho acesso ao valor do item anterior,
-    // dessa forma não consigo calcular em tempo real o valor da nota
-
-    console.log('Event ', event);
-    console.log('Data', nota);
-
-    nota.data.valorTotal = 0;
-  }
-
   atualizaNota(event: any): void {
     console.log(event)
   }
 
-  test(event: any): void {
-    console.log('Entrei no test!');
-  }
 }

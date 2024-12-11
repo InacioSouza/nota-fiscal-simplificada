@@ -9,7 +9,6 @@
                       (onInitNewRow)="onInitNewRowNotas($event)"
                       (onSaving)="cadastraNota($event)"
                       (onRowRemoving)="removeNota($event)"
-                      (onRowUpdated)="test($event)"
                       >
 
             <dxo-filter-row [visible]="true"></dxo-filter-row>
@@ -81,7 +80,6 @@
                           [columnAutoWidth]="true"
                           [focusedRowEnabled]="true"
                           [focusedRowIndex]="0"
-                          (onSaved)="salvar($event, data)"
                           keyExpr="id">
 
               <dxo-editing width="200" mode="row"
@@ -92,23 +90,23 @@
               </dxo-editing>
 
               <dxi-column dataField="id" caption="Id" alignment="left" width="220" [allowEditing]="false"></dxi-column>
-              <dxi-column dataField="produto.nome" caption="Produto" alignment="left" width="220" editCellTemplate="produtoItemEditCellTemplate"></dxi-column>
+              <dxi-column dataField="produto.nome" caption="Produto" alignment="left" width="220" editCellTemplate="produtoItemEditCellTemplate" ></dxi-column>
               <dxi-column dataField="produto.preco" caption="Preço unitário" alignment="left" width="220" [allowEditing]="false" [format]=" {type: 'currency', currency: 'BRL' }" >
                 <dxi-validation-rule type="required" message="O preço é obrigatório"></dxi-validation-rule>
               </dxi-column>
               <dxi-column dataField="quantidade" caption="Quantidade" alignment="left" width="220" editCellTemplate="qtdProdutoEditCellTemplate">
                 <dxi-validation-rule type="required" message="Digite a quantidade do produto"></dxi-validation-rule>
               </dxi-column>
-              <dxi-column dataField="valorTotal" caption="Valor Total" alignment="left" width="220" [allowEditing]="false" [format]=" {type: 'currency', currency: 'BRL' }" [allowEditing]="true" editCellTemplate="valorTotItemEditCellTemplate">
+              <dxi-column dataField="valorTotal" caption="Valor Total" alignment="left" width="220" [allowEditing]="false" [format]=" {type: 'currency', currency: 'BRL' }" editCellTemplate="valorTotItemEditCellTemplate">
                 <dxi-validation-rule type="required" message="O valor total é obrigatório"></dxi-validation-rule>
               </dxi-column>
 
-
+              
               <div *dxTemplate="let selectPdt of 'produtoItemEditCellTemplate'">
                 <dx-select-box [items]="produtos" displayExpr="nome" placeholder="Selecione um produto"
                                [(value)]="produtoSelecionado" [searchEnabled]="true"
                                (onValueChanged)="vinculaPdtData(selectPdt.row.data, $event, selectPdt)"></dx-select-box>
-              </div>
+              </div>  
 
               <div *dxTemplate="let qtd of 'qtdProdutoEditCellTemplate'">
                 <dx-number-box [(value)]="qtd.value" format="#" [min]="1"
