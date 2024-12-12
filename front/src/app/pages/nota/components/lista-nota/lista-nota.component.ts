@@ -43,8 +43,12 @@ export class ListaNotaComponent implements OnInit {
     }, 0);
   }
 
-  cadastraNota(event: any): void {
-    console.log(event)
+  cadastraNota(event: any, listaNota: any): void {
+
+    if (event?.changes[0]?.type === 'update') {
+      return;
+    }
+
     if (event.changes?.length === 0) {
       return;
     }
@@ -72,11 +76,17 @@ export class ListaNotaComponent implements OnInit {
     this.notaService.cadastraNota(nota).subscribe({
       next: (nota) => {
         notify('Nota cadastrada!', 'success', 4000);
+
+        this.notaService.lista().subscribe(result => this.notas = result);
+
+        listaNota.instance.refresh();
       },
       error: (err) => {
         notify('Falha ao cadastrar nota!', 'error', 4000);
       }
     });
+
+
   }
 
   removeNota(event: any): void {
@@ -98,15 +108,37 @@ export class ListaNotaComponent implements OnInit {
     }
   }
 
-  vinculaQtdData(rowData: any, event: any, qtd: any): void {
-    rowData['qtdProduto'] = event.value;
+  removeItem(event: any, listaNota: any, nota: any): void {
+
+    console.log('REMOVE ITEM: ', nota)
+
+    let newValorNota = 0;
+
+    if (nota.data.itens.length !== 0) {
+
+      nota.data.itens.forEach((item: any) => {
+        newValorNota += item.valorTotal;
+      });
+    }
+
+    nota.data.valorTotal = newValorNota;
+
+    console.log('REMOVE ITEM: ', nota)
+
+    listaNota.instance.refresh();
+  }
+
+  vinculaQtdData(event: any, qtd: any, dataItens: any): void {
+    qtd.row.data['qtdProduto'] = event.value;
     this.qtdProduto = event.value;
     qtd.data.quantidade = event.value;
 
-    this.recalculaValorTotItem(rowData, 'qtd');
+    this.recalculaValorTotItem(qtd.row.data, 'qtd');
+
+    dataItens.instance.refresh();
   }
 
-  vinculaPdtData(rowData: any, event: any, s: any): void {
+  vinculaPdtData(rowData: any, event: any, dataItens: any): void {
 
     if (event.value) {
       rowData['produto'] = event.value;
@@ -114,6 +146,8 @@ export class ListaNotaComponent implements OnInit {
     }
 
     this.recalculaValorTotItem(rowData, 'pdt');
+
+    dataItens.instance.refresh();
   }
 
   limpaCamposItem(): void {
@@ -127,8 +161,54 @@ export class ListaNotaComponent implements OnInit {
     event.data.itens = [];
   }
 
-  atualizaNota(event: any): void {
-    console.log(event)
+  atualizaNota(): void {
+    console.log('DENTRO DO ATUALIZA!!!!!!!!!!\n\n', event)
   }
 
+  cancelaEdicaoNota(event: any) {
+    this.notaService.lista().subscribe(result => this.notas = result);
+  }
+
+  test(event: any, nota: any) {
+    console.log(nota);
+  }
+
+  calculateValorNota = (event: any) => {
+    console.log('Calculate', event);
+    let newValor = 0;
+
+    const nota = this.notas.find(nota => nota.id === event.id);
+
+    nota!.valorTotal = 0;
+
+    event.itens.forEach((item: any) => {
+      newValor += item.valorTotal;
+
+      nota!.valorTotal += item.valorTotal;
+
+    });
+
+    return newValor;
+  }
+
+
+  salvaAtualizaItem(listaNota: any, nota: any, data: any) {
+    let newValorNota = 0;
+
+    nota.data.itens!.forEach((item: any) => {
+      newValorNota += item.valorTotal;
+
+      if (isNaN(item.id)) {
+        item.id = '-'
+      }
+    });
+
+    if (!nota.data.hasOwnProperty('id')) {
+      nota.data.valorTotal = 0;
+    }
+
+    listaNota.instance.cellValue(nota.rowIndex, 'valorTotal', newValorNota);
+
+    listaNota.instance.refresh();
+  }
 }
