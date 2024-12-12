@@ -23,11 +23,15 @@ export class NotaService {
     return this.http.post<any>(this.urlNota, nota);
   }
 
-  removeNota(id: number): Observable<void> {
-    return this.http.delete<void>(this.urlNota + `/${id}`);
+  removeNota(id: number): Observable<Nota> {
+    return this.http.delete<Nota>(this.urlNota + `/${id}`);
   }
 
   lista(): Observable<Nota[]> {
     return this.http.get<Nota[]>(this.urlNota);
+  }
+
+  modificaNota(id: number, nota: any): Observable<void> {
+    return this.http.put<void>(this.urlNota + `/${id}`, nota);
   }
 }

@@ -123,7 +123,7 @@ public class NotaController {
 	@GetMapping
 	List<Nota> listaNotas() {
 
-    return (List<Nota>) notaRepo.findAll();
+		return (List<Nota>) notaRepo.findAll();
 	}
 
 	@GetMapping("/{id}")
@@ -181,6 +181,10 @@ public class NotaController {
 
 		Nota notaExistente = notaRepo.findById(id)
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Nota não encontrada"));
+
+		if (!notaExistente.getData_emissao().equals(notaAtualizada.getData_emissao())) {
+			notaExistente.setData_emissao(notaAtualizada.getData_emissao());
+		}
 
 		List<Item> itensValidados = new ArrayList<Item>();
 

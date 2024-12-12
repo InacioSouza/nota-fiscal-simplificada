@@ -110,8 +110,6 @@ export class ListaNotaComponent implements OnInit {
 
   removeItem(event: any, listaNota: any, nota: any): void {
 
-    console.log('REMOVE ITEM: ', nota)
-
     let newValorNota = 0;
 
     if (nota.data.itens.length !== 0) {
@@ -121,9 +119,7 @@ export class ListaNotaComponent implements OnInit {
       });
     }
 
-    nota.data.valorTotal = newValorNota;
-
-    console.log('REMOVE ITEM: ', nota)
+    listaNota.instance.cellValue(nota.rowIndex, 'valorTotal', newValorNota);
 
     listaNota.instance.refresh();
   }
@@ -161,8 +157,24 @@ export class ListaNotaComponent implements OnInit {
     event.data.itens = [];
   }
 
-  atualizaNota(): void {
-    console.log('DENTRO DO ATUALIZA!!!!!!!!!!\n\n', event)
+  atualizaNota(event: any): void {
+
+    if (event.newData.hasOwnProperty('data_emissao')) {
+      event.oldData.data_emissao = event.newData.data_emissao;
+    }
+
+    if (event.newData.hasOwnProperty('cliente')) {
+      event.oldData.cliente = event.newData.cliente;
+    }
+
+    if (event.oldData.itens.length === 0) {
+      event.cancel = true;
+      notify('Deve haver ao menos 1 item na nota!', 'error', 4000);
+      return;
+    }
+
+    this.notaService.modificaNota(event.oldData.id, event.oldData).subscribe(result => console.log(result));
+
   }
 
   cancelaEdicaoNota(event: any) {
