@@ -36,6 +36,8 @@ export class ListaNotaComponent implements OnInit {
     private produtoService: ProdutoService) { }
 
   ngOnInit(): void {
+    this.appInfo.title = 'Nota Fiscal';
+
     setTimeout(() => {
       this.clienteService.lista().subscribe(result => this.clientes = result);
       this.produtoService.lista().subscribe(result => this.produtos = result);
@@ -173,36 +175,13 @@ export class ListaNotaComponent implements OnInit {
       return;
     }
 
-    this.notaService.modificaNota(event.oldData.id, event.oldData).subscribe(result => console.log(result));
+    this.notaService.modificaNota(event.oldData.id, event.oldData).subscribe();
 
   }
 
   cancelaEdicaoNota(event: any) {
     this.notaService.lista().subscribe(result => this.notas = result);
   }
-
-  test(event: any, nota: any) {
-    console.log(nota);
-  }
-
-  calculateValorNota = (event: any) => {
-    console.log('Calculate', event);
-    let newValor = 0;
-
-    const nota = this.notas.find(nota => nota.id === event.id);
-
-    nota!.valorTotal = 0;
-
-    event.itens.forEach((item: any) => {
-      newValor += item.valorTotal;
-
-      nota!.valorTotal += item.valorTotal;
-
-    });
-
-    return newValor;
-  }
-
 
   salvaAtualizaItem(listaNota: any, nota: any, data: any) {
     let newValorNota = 0;

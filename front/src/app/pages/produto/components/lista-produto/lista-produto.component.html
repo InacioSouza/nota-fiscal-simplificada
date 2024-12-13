@@ -13,11 +13,11 @@
         <dxo-editing [texts]="textoAcoes" width="200" mode="row" [allowUpdating]="true"
             [allowDeleting]="true"></dxo-editing>
 
-        <dxi-column caption="Id" width="225" dataField="id" alignment="left" [allowEditing]="false"></dxi-column>
+        <dxi-column dataField="id" caption="Id" width="225"  alignment="left" [allowEditing]="false"></dxi-column>
 
-        <dxi-column caption="Nome" width="225" dataField="nome"></dxi-column>
+        <dxi-column dataField="nome" caption="Nome" width="225" ></dxi-column>
 
-        <dxi-column caption="Preço" width="225" [format]=" {type: 'currency', currency: 'BRL' }" dataField="preco"
+        <dxi-column dataField="preco" caption="Preço" width="225" [format]=" {type: 'currency', currency: 'BRL' }" 
             alignment="left"></dxi-column>
 
     </dx-data-grid>

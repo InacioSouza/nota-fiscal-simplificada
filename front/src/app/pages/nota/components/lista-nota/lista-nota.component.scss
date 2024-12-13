@@ -1,10 +1,11 @@
 .lista__notas{
-    margin-top: 20px;
+    margin: 20px;
     display: flex;
     justify-content: center;
 }
 
-.grid__notas {
-    display: flex;
-    width: 80%;
+
+dx-data-grid{
+    width: auto;
+    max-width: 80%;
 }
