@@ -3,6 +3,7 @@
                       [dataSource]="notas"
                       keyExpr="id"
                       [showBorders]="true"
+                      [columnAutoWidth]="true"
                       [columnHidingEnabled]="true"
                       [focusedRowEnabled]="true"
                       (onInitNewRow)="onInitNewRowNotas($event)"
@@ -37,14 +38,14 @@
 
             <dxo-master-detail [enabled]="true" template="visualizaItensTemplate"></dxo-master-detail>
 
-            <dxi-column dataField="id" caption="Id" alignment="left" width="220" [allowEditing]="false" [minWidth]="20" [visibleIndex]="0"></dxi-column>
-            <dxi-column dataField="numero" caption="número" alignment="left" width="220" [allowEditing]="false" [minWidth]="20" [visibleIndex]="4"></dxi-column>
+            <dxi-column dataField="id" caption="Id" alignment="left" width="100" [allowEditing]="false" [minWidth]="20" [visibleIndex]="0"></dxi-column>
+            <dxi-column dataField="numero" caption="número" alignment="left" width="100" [allowEditing]="false" [minWidth]="20" [visibleIndex]="4"></dxi-column>
 
-            <dxi-column dataField="data_emissao" caption="Data de Emissão" alignment="left" width="220" dataType="date" [minWidth]="50" [visibleIndex]="3">
+            <dxi-column dataField="data_emissao" caption="Data de Emissão" alignment="left" width="250" dataType="date" [minWidth]="50" [visibleIndex]="3">
               <dxi-validation-rule type="required" message="Escolha uma data"></dxi-validation-rule>
             </dxi-column>
 
-            <dxi-column dataField="cliente.nome" caption="Cliente" alignment="left" width="220" [minWidth]="20" [visibleIndex]="1" >
+            <dxi-column dataField="cliente.nome" caption="Cliente" alignment="left" width="300" [minWidth]="20" [visibleIndex]="1" >
                 <dxo-lookup [dataSource]="clientes" displayExpr="nome" valueExpr="nome"></dxo-lookup>
                 <dxi-validation-rule type="required" message="Selecione um cliente"></dxi-validation-rule>
             </dxi-column>
@@ -53,7 +54,7 @@
             caption="Valor Total" 
             dataField="valorTotal"
             editCellTemplate="valorNota"
-            alignment="left" width="220"
+            alignment="left" width="250"
             [allowEditing]="false"
             [format]=" {type: 'currency', currency: 'BRL' }" [minWidth]="100" [visibleIndex]="2"
             ></dxi-column>
