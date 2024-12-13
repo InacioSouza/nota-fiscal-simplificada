@@ -108,7 +108,7 @@
 
                 </dxo-editing>
 
-                <dxi-column dataField="id" caption="Id" alignment="left" width="220" [allowEditing]="false" priority="1"></dxi-column>
+                <dxi-column dataField="id" caption="Id" alignment="left"  [allowEditing]="false" priority="1"></dxi-column>
                 <dxi-column dataField="produto.nome" caption="Produto" alignment="left" width="220" editCellTemplate="produtoItemEditCellTemplate" ></dxi-column>
                 <dxi-column dataField="produto.preco" caption="Preço unitário" alignment="left" width="220" [allowEditing]="false" [format]=" {type: 'currency', currency: 'BRL' }" >
                   <dxi-validation-rule type="required" message="O preço é obrigatório"></dxi-validation-rule>
